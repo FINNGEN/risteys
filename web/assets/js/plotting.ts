@@ -405,27 +405,15 @@ function plotNMeasurementsPerPerson(data) {
 }
 
 function plotQCTableTestOutcome(data: ObsData) {
-  const colors = {
-    grey: "#ddd",
-    darkerGrey: "#959fa6",
-    orange: "#dca863",
-    orangeBrighter: "#f8cf9b",
-    blue: "#6495b2",
-    violet: "#a580a4",
-    violetBrighter: "#c59ec4",
-    red: "#cb4141",
-    darkRed: "#a61722",
-  };
-
   const colorRange = {
-    NA: colors.grey,
-    normal: colors.darkerGrey,
-    abnormal: colors.orange,
-    veryAbnormal: colors.orangeBrighter,
-    low: colors.violet,
-    veryLow: colors.violetBrighter,
-    high: colors.red,
-    veryHigh: colors.darkRed,
+    NA: "var(--color-qc-table-test-outcome-value-na)",
+    normal: "var(--color-qc-table-test-outcome-value-n)",
+    abnormal: "var(--color-qc-table-test-outcome-value-a)",
+    veryAbnormal: "var(--color-qc-table-test-outcome-value-aa)",
+    low: "var(--color-qc-table-test-outcome-value-l)",
+    veryLow: "var(--color-qc-table-test-outcome-value-ll)",
+    high: "var(--color-qc-table-test-outcome-value-h)",
+    veryHigh: "var(--color-qc-table-test-outcome-value-hh)",
   };
 
   // TODO(Vincent 2024-10-28)  The tip might get visually truncated in some cases when it's
