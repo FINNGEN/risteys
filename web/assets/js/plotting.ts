@@ -480,6 +480,8 @@ function plotQCTableHarmonizedValueDistribution(data) {
   if (data.bins.length === 0) {
     return "";
   } else {
+    const ticks =
+      data.xmin < 0 ? [data.xmin, 0, data.xmax] : [data.xmin, data.xmax];
     return Plot.plot({
       width: 140,
       height: 30,
@@ -488,7 +490,7 @@ function plotQCTableHarmonizedValueDistribution(data) {
       style: "overflow: visible;",
       x: {
         domain: [data.xmin, data.xmax],
-        ticks: [data.xmin, data.xmax],
+        ticks: ticks,
         label: null,
       },
       y: {
@@ -497,6 +499,7 @@ function plotQCTableHarmonizedValueDistribution(data) {
       },
       marks: [
         Plot.ruleY([0]),
+        Plot.ruleX([0], { stroke: "#aaa", strokeOpacity: 0.1 }),
         Plot.rectY(data.bins, {
           x1: "x1",
           x2: "x2",
