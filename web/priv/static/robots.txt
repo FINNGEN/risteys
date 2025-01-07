@@ -8,3 +8,6 @@ User-agent: *
 Disallow: /api/
 Disallow: /upset_plot/
 Disallow: /auth/
+
+User-agent: AhrefsBot
+Crawl-Delay: 5
