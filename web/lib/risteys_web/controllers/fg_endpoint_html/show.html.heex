@@ -1,4 +1,4 @@
-<%# Navigation on wide screen: display only the page links since other links are already in the header %>
+<%!-- Navigation on wide screen: display only the page links since other links are already in the header --%>
 <nav class="wide">
   <p>Go to: <a href="#endpoint-definition">Endpoint definition</a>
     <a href="#similar-endpoints">Similar endpoints</a>
@@ -17,7 +17,7 @@
       <p>This is a <b>non-core</b> endpoint: only basic statistics are computed.</p>
       <%= case @replacements do %>
         <% {_reason, nil} -> %>
-          <%# No replacement endpoints to show, so we don't display anything. %>
+          <%!-- No replacement endpoints to show, so we don't display anything. --%>
         <% {reason, replacement} when reason in [:selected_core, :exallc_priority] -> %>
           <p>
             See its core counterpart <a href={"#{replacement.name}"}><%= replacement.name %></a>
@@ -54,7 +54,7 @@
         Endpoint Browser
       </a>
 
-      <%# Only core endpoints are on PheWeb, so we don't show a link for non-core endpoints %>
+      <%!-- Only core endpoints are on PheWeb, so we don't show a link for non-core endpoints --%>
       <%= if @endpoint.is_core do %>
         <a
           href={"https://results.finngen.fi/pheno/#{@endpoint.name}"}
@@ -96,7 +96,8 @@
       />
     </article>
 
-    <div> <%# wrap into a div so the <article> height is independent of the grid cell height %>
+    <div>
+      <%!-- wrap into a div so the <article> height is independent of the grid cell height --%>
       <article id="similar-endpoints" class="box">
         <div class="p-4 pl-6 left-right-heading">
           <h2>Similar endpoints</h2>

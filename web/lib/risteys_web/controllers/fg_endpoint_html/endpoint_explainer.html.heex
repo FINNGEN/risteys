@@ -152,7 +152,7 @@
 									<% nil -> %>
 									<% filters -> %>
 										<ul>
-											<%# OUTPAT ICD %>
+											<%!-- OUTPAT ICD --%>
 											<%= if Map.has_key?(filters, :outpat_icd) do %>
 												<li class="pb-1">
 													<b>Primary healthcare outpatient:</b> ICD-10
@@ -161,7 +161,7 @@
 												</li>
 											<% end %>
 
-											<%# OUTPAP_OPER %>
+									        <%!-- OUTPAP_OPER --%>
 											<%= if Map.has_key?(filters, :outpat_oper) do %>
 												<li class="pb-1">
 													<b>Primary healthcare outpatient:</b> <abbr data-title="Nordic Medico-Statistical Committee">NOMESCO</abbr>
@@ -170,8 +170,8 @@
 												</li>
 											<% end %>
 
-											<%# HD %>
-											<%# -- HD ATC %>
+											<%!-- HD --%>
+											<%!-- -- HD ATC --%>
 											<%= if Map.has_key?(filters, :hd_icd_10_atc) do %>
 												<li class="pb-1">
 													<b>Hospital discharge:</b> ATC codes for adverse effects of Drugs
@@ -180,7 +180,7 @@
 												</li>
 											<% end %>
 
-											<%# -- HD ICD-10 %>
+											<%!-- -- HD ICD-10 --%>
 											<%= if Map.has_key?(filters, :hd_icd_10) do %>
 												<li class="pb-1">
 													<b>Hospital discharge:</b> ICD-10
@@ -189,7 +189,7 @@
 												</li>
 											<% end %>
 
-											<%# -- HD ICD-9 %>
+											<%!-- -- HD ICD-9 --%>
 											<%= if Map.has_key?(filters, :hd_icd_9) do %>
 												<li class="pb-1">
 													<b>Hospital discharge:</b> ICD-9
@@ -198,7 +198,7 @@
 												</li>
 											<% end %>
 
-											<%# -- HD ICD-8 %>
+											<%!-- -- HD ICD-8 --%>
 											<%= if Map.has_key?(filters, :hd_icd_8) do %>
 												<li class="pb-1">
 													<b>Hospital discharge:</b> ICD-8
@@ -207,7 +207,7 @@
 												</li>
 											<% end %>
 
-                                            <%# -- HD ICD-10 excl %>
+                                            <%!-- -- HD ICD-10 excl --%>
                                             <%= if Map.has_key?(filters, :hd_icd_10_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Hospital discharge:</b> excluded ICD-10
@@ -216,7 +216,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- HD ICD-9 excl %>
+                                            <%!-- -- HD ICD-9 excl --%>
                                             <%= if Map.has_key?(filters, :hd_icd_9_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Hospital discharge:</b> excluded ICD-9
@@ -225,7 +225,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- HD ICD-8 excl %>
+                                            <%!-- -- HD ICD-8 excl --%>
                                             <%= if Map.has_key?(filters, :hd_icd_8_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Hospital discharge:</b> excluded ICD-8
@@ -234,8 +234,8 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# COD %>
-                                            <%# -- COD ICD-10 %>
+                                            <%!-- COD --%>
+                                            <%!-- -- COD ICD-10 --%>
                                             <%= if Map.has_key?(filters, :cod_icd_10) do %>
                                                 <li class="pb-1">
                                                     <b>Cause of death:</b> ICD-10
@@ -244,7 +244,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- COD ICD-9 %>
+                                            <%!-- -- COD ICD-9 --%>
                                             <%= if Map.has_key?(filters, :cod_icd_9) do %>
                                                 <li class="pb-1">
                                                     <b>Cause of death:</b> ICD-9
@@ -253,7 +253,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- COD ICD-8 %>
+                                            <%!-- -- COD ICD-8 --%>
                                             <%= if Map.has_key?(filters, :cod_icd_8) do %>
                                                 <li class="pb-1">
                                                     <b>Cause of death:</b> ICD-8
@@ -262,7 +262,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- COD ICD-10 excl %>
+                                            <%!-- -- COD ICD-10 excl --%>
                                             <%= if Map.has_key?(filters, :cod_icd_10_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Cause of death:</b> excluded ICD-10
@@ -271,7 +271,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- COD ICD-9 excl %>
+                                            <%!-- -- COD ICD-9 excl --%>
                                             <%= if Map.has_key?(filters, :cod_icd_9_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Cause of death:</b> excluded ICD-9
@@ -280,7 +280,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- COD ICD-8 excl %>
+                                            <%!-- -- COD ICD-8 excl --%>
                                             <%= if Map.has_key?(filters, :cod_icd_8_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Cause of death:</b> excluded ICD-8
@@ -289,8 +289,8 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# OPER %>
-                                            <%# -- OPER NOM %>
+                                            <%!-- OPER --%>
+                                            <%!-- -- OPER NOM --%>
                                             <%= if Map.has_key?(filters, :oper_nom) do %>
                                                 <li class="pb-1">
                                                     <b>Operations:</b> <abbr data-title="Nordic Medico-Statistical Committee">NOMESCO</abbr> codes
@@ -299,7 +299,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- OPER HL %>
+                                            <%!-- -- OPER HL --%>
                                             <%= if Map.has_key?(filters, :oper_hl) do %>
                                                 <li class="pb-1">
                                                     <b>Operations:</b> Finnish Hospital League codes
@@ -308,7 +308,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- OPER HP1 %>
+                                            <%!-- -- OPER HP1 --%>
                                             <%= if Map.has_key?(filters, :oper_hp1) do %>
                                                 <li class="pb-1">
                                                     <b>Operations:</b> Heart Patient codes v1
@@ -317,7 +317,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- OPER HP2 %>
+                                            <%!-- -- OPER HP2 --%>
                                             <%= if Map.has_key?(filters, :oper_hp2) do %>
                                                 <li class="pb-1">
                                                     <b>Operations:</b> Heart Patient codes v2
@@ -326,8 +326,8 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# REIMB %>
-                                            <%# -- REIMB KELA %>
+                                            <%!-- REIMB --%>
+                                            <%!-- -- REIMB KELA --%>
                                             <%= if Map.has_key?(filters, :kela_reimb) do %>
                                                 <li class="pb-1">
                                                     <b><abbr data-title="Finnish Social Insurance Institution">KELA</abbr> reimbursements:</b> KELA codes
@@ -336,7 +336,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- REIMB ICD %>
+                                            <%!-- -- REIMB ICD --%>
                                             <%= if Map.has_key?(filters, :kela_reimb_icd) do %>
                                                 <li class="pb-1">
                                                     <b><abbr data-title="Finnish Social Insurance Institution">KELA</abbr> reimbursements:</b> ICD-10
@@ -345,8 +345,8 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# MED PURCH %>
-                                            <%# -- ATC %>
+                                            <%!-- MED PURCH --%>
+                                            <%!-- -- ATC --%>
                                             <%= if Map.has_key?(filters, :kela_atc) do %>
                                                 <li class="pb-1">
                                                     <b>Medicine purchases:</b> ATC
@@ -355,7 +355,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- VNRO %>
+                                            <%!-- -- VNRO --%>
                                             <%= if Map.has_key?(filters, :kela_vnro) do %>
                                                 <li class="pb-1">
                                                     <b>Medicine purchases:</b> VNRO
@@ -364,8 +364,8 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# CANCER %>
-                                            <%# -- TOPO %>
+                                            <%!-- CANCER --%>
+                                            <%!-- -- TOPO --%>
                                             <%= if Map.has_key?(filters, :canc_topo) do %>
                                                 <li class="pb-1">
                                                     <b>Cancer registry:</b> Topography ICD-O-3
@@ -374,7 +374,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- TOPO excl %>
+                                            <%!-- -- TOPO excl --%>
                                             <%= if Map.has_key?(filters, :canc_topo_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Cancer registry:</b> excluded Topography ICD-O-3
@@ -383,7 +383,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- MORPH %>
+                                            <%!-- -- MORPH --%>
                                             <%= if Map.has_key?(filters, :canc_morph) do %>
                                                 <li class="pb-1">
                                                     <b>Cancer registry:</b> Morphology ICD-O-3
@@ -392,7 +392,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- MORPH excl %>
+                                            <%!-- -- MORPH excl --%>
                                             <%= if Map.has_key?(filters, :canc_morph_excl) do %>
                                                 <li class="pb-1">
                                                     <b>Cancer registry:</b> excluded Morphology ICD-O-3
@@ -401,7 +401,7 @@
                                                 </li>
                                             <% end %>
 
-                                            <%# -- BEHAV %>
+                                            <%!-- -- BEHAV --%>
                                             <%= if Map.has_key?(filters, :canc_behav) do %>
                                                 <li class="pb-1">
                                                     <b>Cancer registry:</b> Behaviour codes
@@ -605,9 +605,7 @@
 	<% end %>
 
 
-	<%#
-	Dialog with the original endpoint definitions.
-	%>
+	<%!-- Dialog with the original endpoint definitions. --%>
 		<div id="view-original-rules" class="dialog-backdrop hidden" tabindex="0">
 			<div role="dialog"
 				aria-labelledby="view-original-rules-label"
@@ -629,12 +627,12 @@
 		</div>
 
 
-	<%#
+	<%!--
 	The upset plot needs to be the last child otherwise we cannot interact (e.g. click the <a>) with it:
 	- it has a "position: absolute"
 	- the other elements would be drawn over it
 	- even if they don't make it disappear, they make it uninteractive
-	%>
+	--%>
 
 	<article class="link-upset-plot">
 		<%= #render(RisteysWeb.FGEndpointView, "upset_plot.html", assigns) %>
