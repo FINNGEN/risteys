@@ -158,12 +158,12 @@
         <div class="cell-numbers" role="gridcell">
           <%= if is_nil(row.mean_value_cases),
             do: "—",
-            else: :erlang.float_to_binary(row.mean_value_cases, decimals: 1) %>
+            else: :erlang.float_to_binary(row.mean_value_cases, decimals: 2) %>
         </div>
         <div class="cell-numbers" role="gridcell">
           <%= if is_nil(row.mean_value_controls),
             do: "—",
-            else: :erlang.float_to_binary(row.mean_value_controls, decimals: 1) %>
+            else: :erlang.float_to_binary(row.mean_value_controls, decimals: 2) %>
         </div>
         <div class="col-unit" role="gridcell">
           <%= row.mean_value_unit %>
