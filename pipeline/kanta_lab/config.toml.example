@@ -1,0 +1,59 @@
+[input.phenotype]
+# Path to the FinnGen minimum extended phenotype file (.txt.gz).
+file_path = ""
+
+[input.phenotype.columns]
+# Define the columns of the FinnGen minimum extended phenotype file.
+personid = "FINNGENID"
+sex = "SEX"
+date_of_birth = "APPROX_BIRTH_DATE"
+age_end_follow_up = "AGE_AT_DEATH_OR_END_OF_FOLLOWUP"
+
+
+[input.kanta_preprocessed]
+# Path to the preprocessed FinnGen Kanta lab data file (.parquet).
+file_path = ""
+
+[input.kanta_preprocessed.columns]
+personid = "FINNGENID"
+omopid = "OMOP_CONCEPT_ID"
+datetime = "APPROX_EVENT_DATETIME"
+test_name = "TEST_NAME"
+meas_unit = "MEASUREMENT_UNIT"
+meas_unit_harmonized = "MEASUREMENT_UNIT_HARMONIZED"
+meas_value_harmonized = "MEASUREMENT_VALUE_HARMONIZED"
+test_outcome = "TEST_OUTCOME"
+
+
+[pipeline.stats]
+# `age_dist_x_axis`: [Integer, Integer]
+#   Default: [-10, 100]
+#   Age interval for the x-axis of age distributions.
+#   Can be negative since people born after 2014 when the Kanta registry starts
+#   will have negagive values for age at registry start.
+age_dist_x_axis = [-10, 100]
+# `age_dist_bin_width`: Integer ≥ 1
+#   Default: 2
+age_dist_bin_width = 2
+
+# `numerical_dist_n_bins`: Integer ≥ 1
+#   Default: 100
+numerical_dist_n_bins = 100
+
+# `kanta_registry_span_dates`: [Date, Date]
+#  Default: [2014-01-01, 2024-01-01]
+#  Date interval (right-side excluded) to use for computing age at registry
+#  start, and N measurements over the years.
+kanta_registry_span_dates = [2014-01-01, 2024-01-01]
+
+
+[output]
+# Path to a directory that will hold the data for multiple runs.
+# In the end, it's structure will be:
+#    . base_run_dir/
+#    \_.  run_TIMESTAMP/
+#       \_. partition_by_omopid/
+#       \_. stats/
+#       \_. log.txt
+#       \_. conf.toml
+base_run_directory = ""

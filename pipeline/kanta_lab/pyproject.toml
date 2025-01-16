@@ -1,0 +1,21 @@
+[project]
+name = "kanta-risteys-pipeline"
+version = "0.1.0"
+description = "Risteys pipeline to generate summary statistics from FinnGen Kanta lab data."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.2.1",
+    "polars>=1.19.0",
+]
+
+[project.scripts]
+pipeline = "kanta_risteys_pipeline:main"
+
+[dependency-groups]
+dev = [
+    "ipython>=8.31.0",
+]
+
+[tool.uv]
+package = true
