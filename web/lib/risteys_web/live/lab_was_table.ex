@@ -1,22 +1,70 @@
 defmodule RisteysWeb.Live.LabWASTable do
   use RisteysWeb, :live_view
 
-  def mount(_params, %{"endpoint" => endpoint}, socket) do
+  def mount(_params, session, socket) do
     default_sorter = "with-meas-mlog10p_desc"
     init_form = to_form(%{"sorter" => default_sorter})
 
-    all_labwas_rows = Risteys.LabWAS.get_labwas(endpoint)
+    socket =
+      case session do
+        %{"endpoint" => endpoint} ->
+          set_facet_assigns(socket, :endpoint, endpoint)
+
+        %{"lab_test_omop_id" => lab_test_omop_id} ->
+          set_facet_assigns(socket, :lab_test, lab_test_omop_id)
+      end
 
     socket =
       socket
       |> assign(:form, init_form)
-      |> assign(:filter_omop, "")
+      |> assign(:filter_facet, "")
       |> assign(:filter_unit, "")
       |> assign(:active_sorter, default_sorter)
-      |> assign(:all_labwas_rows, all_labwas_rows)
-      |> assign(:display_rows, all_labwas_rows)
+      |> assign(:display_rows, socket.assigns.all_labwas_rows)
 
     {:ok, socket, layout: false}
+  end
+
+  def set_facet_assigns(socket, :endpoint, endpoint) do
+    assigns = %{}
+
+    facet_header = ~H"""
+    <span class="font-mono">(ID)</span> Name
+    """
+
+    socket
+    |> assign(:facet, :endpoint)
+    |> assign(:all_labwas_rows, Risteys.LabWAS.get_fgendpoint_labwas(endpoint))
+    |> assign(:facet_top_header, "OMOP Concept")
+    |> assign(:facet_header, facet_header)
+  end
+
+  def set_facet_assigns(socket, :lab_test, lab_test_omop_id) do
+    socket
+    |> assign(:facet, :lab_test)
+    |> assign(:all_labwas_rows, Risteys.LabWAS.get_lab_test_labwas(lab_test_omop_id))
+    |> assign(:facet_top_header, "Endpoint")
+    |> assign(:facet_header, "Name")
+  end
+
+  def render_facet_row_index(%{facet: :endpoint} = assigns) do
+    ~H"""
+    <div role="rowheader" title={@row.omop_concept_name}>
+      <a href={~p"/lab-tests/#{@row.omop_concept_id}"}>
+        (<span class="font-mono"><%= @row.omop_concept_id %></span>) <%= @row.omop_concept_name %>
+      </a>
+    </div>
+    """
+  end
+
+  def render_facet_row_index(%{facet: :lab_test} = assigns) do
+    ~H"""
+    <div role="rowheader" title={@row.fg_endpoint_longname}>
+      <a href={~p"/endpoints/#{@row.fg_endpoint_name}"}>
+        <%= @row.fg_endpoint_longname %>
+      </a>
+    </div>
+    """
   end
 
   def handle_event("sort_table", %{"sorter" => sorter}, socket) do
@@ -30,13 +78,13 @@ defmodule RisteysWeb.Live.LabWASTable do
 
   def handle_event("update_table", filters, socket) do
     %{
-      "omop-id-name" => filter_omop,
+      "facet" => filter_facet,
       "mean-value-unit" => filter_unit
     } = filters
 
     socket =
       socket
-      |> assign(:filter_omop, filter_omop)
+      |> assign(:filter_facet, filter_facet)
       |> assign(:filter_unit, filter_unit)
       |> update_table()
 
@@ -47,15 +95,7 @@ defmodule RisteysWeb.Live.LabWASTable do
     display_rows =
       socket.assigns.all_labwas_rows
       |> Enum.filter(fn row ->
-        filter_omop_id = String.contains?(row.omop_concept_id, socket.assigns.filter_omop)
-
-        filter_omop_name =
-          String.contains?(
-            String.downcase(row.omop_concept_name || ""),
-            String.downcase(socket.assigns.filter_omop)
-          )
-
-        filter_omop = filter_omop_id or filter_omop_name
+        filter_facet = apply_filter_facet(socket.assigns.facet, row, socket.assigns.filter_facet)
 
         filter_unit =
           String.contains?(
@@ -63,11 +103,39 @@ defmodule RisteysWeb.Live.LabWASTable do
             String.downcase(socket.assigns.filter_unit)
           )
 
-        filter_omop and filter_unit
+        filter_facet and filter_unit
       end)
       |> sort_with_nil(socket.assigns.active_sorter)
 
     assign(socket, :display_rows, display_rows)
+  end
+
+  defp apply_filter_facet(:endpoint, row, text_filter) do
+    filter_omop_id = String.contains?(row.omop_concept_id, text_filter)
+
+    filter_omop_name =
+      String.contains?(
+        String.downcase(row.omop_concept_name || ""),
+        String.downcase(text_filter)
+      )
+
+    filter_omop_id or filter_omop_name
+  end
+
+  defp apply_filter_facet(:lab_test, row, text_filter) do
+    filter_fg_endpoint_name =
+      String.contains?(
+        String.downcase(row.fg_endpoint_name),
+        String.downcase(text_filter)
+      )
+
+    filter_fg_endpoint_longname =
+      String.contains?(
+        String.downcase(row.fg_endpoint_longname),
+        String.downcase(text_filter)
+      )
+
+    filter_fg_endpoint_name or filter_fg_endpoint_longname
   end
 
   defp sort_with_nil(elements, sorter) do

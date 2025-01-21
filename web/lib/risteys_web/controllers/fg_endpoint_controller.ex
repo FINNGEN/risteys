@@ -86,7 +86,7 @@ defmodule RisteysWeb.FGEndpointController do
     codewas_codes = CodeWAS.list_codes(endpoint)
 
     # LabWAS table
-    labwas_rows = LabWAS.get_labwas(endpoint)
+    labwas_rows = LabWAS.get_fgendpoint_labwas(endpoint)
 
     conn
     |> assign(:endpoint, endpoint)

@@ -1,7 +1,7 @@
 <div class="data-grid-table labwas--data-grid-table labwas--data-grid-table-conf" role="grid">
   <div role="rowgroup">
     <div role="row">
-      <div class="omop top-header" role="columnheader">OMOP Concept</div>
+      <div class="facet top-header" role="columnheader"><%= @facet_top_header %></div>
       <div class="with-meas top-header" role="columnheader">People with measurements</div>
       <div class="mean-nmeas top-header" role="columnheader">Mean N measurements</div>
       <div class="mean-value top-header" role="columnheader">Mean measured value</div>
@@ -15,7 +15,7 @@
         style="display: none;"
       >
       </.form>
-      <div class="omop" role="columnheader">(<span class="font-mono">ID</span>) Name</div>
+      <div class="facet" role="columnheader"><%= @facet_header %></div>
 
       <div class="with-meas header-numbers" role="columnheader">N Cases</div>
       <div class="with-meas header-numbers" role="columnheader">N Controls</div>
@@ -33,11 +33,11 @@
       <div class="mean-value header-numbers" role="columnheader">N controls</div>
     </div>
     <div role="row">
-      <div class="omop" role="columnheader">
+      <div class="facet" role="columnheader">
         <%= RisteysWeb.Utils.text_input_field(
-          "omop-id-name",
+          "facet",
           "form-labwas-table",
-          @filter_omop,
+          @filter_facet,
           "type to filter"
         ) %>
       </div>
@@ -134,11 +134,7 @@
   <div role="rowgroup">
     <%= for row <- @display_rows do %>
       <div role="row">
-        <div role="rowheader" title={row.omop_concept_name}>
-          <a href={~p"/lab-tests/#{row.omop_concept_id}"}>
-            (<span class="font-mono"><%= row.omop_concept_id %></span>) <%= row.omop_concept_name %>
-          </a>
-        </div>
+        <.render_facet_row_index facet={@facet} row={row} />
         <div class="cell-numbers" role="gridcell"><%= row.with_measurement_n_cases %></div>
         <div class="cell-numbers" role="gridcell"><%= row.with_measurement_n_controls %></div>
         <div class="cell-numbers" role="gridcell">

@@ -284,7 +284,9 @@ TODO:
 
         .endpoints {
             display: grid;
-            grid-template-columns: max-content fit-content(50ch) auto max-content max-content;
+            grid-template-columns:
+                max-content fit-content(50ch)
+                auto max-content max-content;
             column-gap: var(--gap);
             padding: 0.25em 0.5em;
 
@@ -416,7 +418,7 @@ TODO:
      We use minmax() for the first 2 columns because otherwise the text input in these columns would mess the grid layout.
      This is because browsers give a fixed width for text inputs by default, and also by default grid cells extend past the defined _fr instead of overflowing.
      */
-    --table-layout: [omop-start] minmax(3ch, 5fr) [omop-end
+    --table-layout: [facet-start] minmax(3ch, 5fr) [facet-end
         with-meas-ncases-start] minmax(3ch, 2fr) [with-meas-ncases-end
         with-meas-ncontrols-start] minmax(3ch, 2fr) [with-meas-ncontrols-end
         with-meas-odds-ratio-start] minmax(3ch, 2fr) [with-meas-odds-ratio-end
@@ -434,6 +436,9 @@ TODO:
 }
 
 /* Custom styles for CodeWAS data grid table */
+.labwas--data-grid-table {
+    background-color: white;
+}
 .labwas--data-grid-table [role="row"] {
     column-gap: 0; /* Table is quite crowded so saving space by disable gaps */
 }
@@ -454,13 +459,13 @@ TODO:
     text-align: center;
 }
 
-.labwas--data-grid-table .omop,
+.labwas--data-grid-table .facet,
 .labwas--data-grid-table .mean-nmeas {
     background: #efefef;
 }
 
-.labwas--data-grid-table .top-header.omop {
-    grid-column: omop;
+.labwas--data-grid-table .top-header.facet {
+    grid-column: facet;
 }
 .labwas--data-grid-table .top-header.with-meas {
     grid-column: with-meas-ncases / with-meas-pvalue;

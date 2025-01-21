@@ -6,11 +6,37 @@ defmodule Risteys.LabWAS do
 
   require Logger
 
-  def get_labwas(fg_endpoint) do
+  def get_fgendpoint_labwas(fg_endpoint) do
     Repo.all(
       from stats in Stats,
         where: stats.fg_endpoint_id == ^fg_endpoint.id,
         order_by: [desc: :with_measurement_mlogp]
+    )
+  end
+
+  def get_lab_test_labwas(lab_test_omop_id) do
+    Repo.all(
+      from stats in Stats,
+        join: fg_endpoint in Risteys.FGEndpoint.Definition,
+        on: fg_endpoint.id == stats.fg_endpoint_id,
+        where: stats.omop_concept_id == ^lab_test_omop_id,
+        order_by: [desc: :with_measurement_mlogp],
+        select: %{
+          fg_endpoint_name: fg_endpoint.name,
+          fg_endpoint_longname: fg_endpoint.longname,
+          with_measurement_n_cases: stats.with_measurement_n_cases,
+          with_measurement_n_controls: stats.with_measurement_n_controls,
+          with_measurement_odds_ratio: stats.with_measurement_odds_ratio,
+          with_measurement_mlogp: stats.with_measurement_mlogp,
+          mean_n_measurements_cases: stats.mean_n_measurements_cases,
+          mean_n_measurements_controls: stats.mean_n_measurements_controls,
+          mean_value_cases: stats.mean_value_cases,
+          mean_value_controls: stats.mean_value_controls,
+          mean_value_unit: stats.mean_value_unit,
+          mean_value_n_cases: stats.mean_value_n_cases,
+          mean_value_n_controls: stats.mean_value_n_controls,
+          mean_value_mlogp: stats.mean_value_mlogp
+        }
     )
   end
 

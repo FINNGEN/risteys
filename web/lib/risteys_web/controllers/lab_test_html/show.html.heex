@@ -246,5 +246,12 @@
         </figure>
       </article>
     </article>
+
+    <article>
+      <h2>LabWAS</h2>
+      <%= live_render(@conn, RisteysWeb.Live.LabWASTable,
+        session: %{"lab_test_omop_id" => @omop_concept_id}
+      ) %>
+    </article>
   </div>
 </main>
