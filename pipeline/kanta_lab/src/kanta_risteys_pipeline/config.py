@@ -2,7 +2,6 @@ import datetime
 import logging
 import pprint
 import shutil
-import sys
 import tempfile
 import tomllib
 from dataclasses import dataclass
@@ -66,8 +65,8 @@ def parse_config(config_file):
     with Path(config_file).open("rb") as ff:
         config = tomllib.load(ff)
 
-    logger.info("Configuration used for this run:")
-    pprint.pp(config, stream=sys.stderr)
+    config_formatted = pprint.pformat(config)
+    logger.debug(f"Configuration used for this run:\n{config_formatted}")
 
     return config
 
@@ -192,7 +191,7 @@ def apply(parsed_config: dict, config_file: Path) -> RuntimeConfig:
     name = f"run_{datetime_now}"
     run_dir = Path(parsed_config["output"]["base_run_directory"]) / name
     run_dir.mkdir()
-    logger.info(f"Using the following run directory:\n\t{run_dir.absolute()}")
+    logger.info(f"Using the following run directory:\t{run_dir.absolute()}")
 
     # Setup an additional logger to a file in the run directory
     log_file = run_dir / "log.txt"
