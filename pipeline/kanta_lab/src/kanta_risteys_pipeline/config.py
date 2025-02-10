@@ -30,6 +30,7 @@ class ColumnsKantaPreprocessed:
     meas_unit_harmonized: str
     meas_value_harmonized: str
     test_outcome: str
+    reference_range: str
 
 
 @dataclass(frozen=True)
@@ -170,6 +171,9 @@ def apply(parsed_config: dict, config_file: Path) -> RuntimeConfig:
         ],
         test_outcome=parsed_config["input"]["kanta_preprocessed"]["columns"][
             "test_outcome"
+        ],
+        reference_range=parsed_config["input"]["kanta_preprocessed"]["columns"][
+            "reference_range"
         ],
     )
 

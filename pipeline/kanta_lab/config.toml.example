@@ -23,6 +23,7 @@ meas_unit = "MEASUREMENT_UNIT"
 meas_unit_harmonized = "MEASUREMENT_UNIT_HARMONIZED"
 meas_value_harmonized = "MEASUREMENT_VALUE_HARMONIZED"
 test_outcome = "TEST_OUTCOME"
+reference_range = "REFERENCE_RANGE_GROUP"
 
 
 [pipeline.stats]

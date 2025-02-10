@@ -137,6 +137,13 @@ def pipeline(*, list_omop_ids, runtime_config):
         output_dir=runtime_config.stats_dir,
     )
 
+    compute_reference_range_tables(
+        list_omop_ids=list_omop_ids,
+        data_path=runtime_config.kanta_preprocessed_file,
+        cols=runtime_config.kanta_preprocessed_columns,
+        output_dir=runtime_config.stats_dir,
+    )
+
     logger.info("Running stats pipeline: Done")
 
 
@@ -1097,6 +1104,33 @@ def compute_dist_n_records_measurements_per_person(
     binned_measurements.collect().write_ndjson(output_path_measurements_stats)
 
     logger.info("Computing distribution of N records and measurements per person: Done")
+
+
+def compute_reference_range_tables(
+    list_omop_ids,
+    data_path,
+    cols,
+    output_dir,
+):
+    logger.info("Computing reference range tables")
+
+    output_path = output_dir / "reference_range_tables.jsonl"
+
+    (
+        pl.scan_parquet(data_path)
+        .filter(pl.col(cols.omopid).is_in(list_omop_ids))
+        .group_by([cols.omopid, cols.reference_range])
+        .agg(
+            pl.len().alias("NRecords"),
+            pl.col(cols.personid).n_unique().alias("NPeople"),
+        )
+        .sort(cols.omopid, "NPeople", "NRecords")
+        .rename({cols.reference_range: "ReferenceRange"})
+        .pipe(keep_green, column_n_people="NPeople")
+        .collect()
+    ).write_ndjson(output_path)
+
+    logger.info("Computing reference range tables: Done")
 
 
 def bins_from_median_abs_dev(
