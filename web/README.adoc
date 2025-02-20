@@ -202,6 +202,9 @@ Import scripts should be run in this order:
   - <<file-kanta-lab-dist-value-range-stats, Kanta lab – Distribution value range / stats>>
   - <<file-kanta-lab-dist-value-range-binning, Kanta lab – Distribution value range / binning>>
 
+43. `Risteys.LabTestStats.import_reference_range_table`, using:
+  - <<file-kanta-lab-reference-range-table, Kanta lab – Reference range table>>
+
 
 File list
 ~~~~~~~~~
@@ -448,4 +451,8 @@ File list
 
 * [[file-kanta-lab-dist-value-range-binning]] Kanta lab – Distribution value range / binning
 ** name: `value_range_distributions__bins_definitions.XXH64_7ce4b5f6945e9831.jsonl`
+** source: Risteys Kanta lab pipeline
+
+* [[file-kanta-lab-reference-range-table]] Kanta lab – Reference range table
+** name: `reference_range_tables.XXH64_e06dbb1fd581024e.jsonl`
 ** source: Risteys Kanta lab pipeline
