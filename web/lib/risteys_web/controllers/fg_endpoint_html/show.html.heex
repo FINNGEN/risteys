@@ -69,14 +69,8 @@
     <p class="p-2 pl-6"><%= @endpoint.name %></p>
     <article class="description">
       <p class="p-6 pb-0"><%= @description %></p>
-      <p class="text-right pb-1 pr-2 text-sm">
-        <a
-          href={"https://airtable.com/shrDh0g0YiXfzplun?prefill_Endpoint=#{@endpoint.name}"}
-          target="_blank"
-          rel="noopener noreferrer external"
-        >
-          Suggest a new description
-        </a>
+      <p style="font-size: 0.875em; text-align: right; padding-right: 0.5em; padding-bottom: 0.25em;">
+        <%= ahref_feedback(@conn, "Suggest a new description") %>
       </p>
     </article>
   </div>
@@ -87,6 +81,13 @@
         <h2>Endpoint definition</h2>
         <a href="#">↥</a>
       </div>
+
+      <p style="font-size: 0.875em; text-align: right; padding-right: 0.5em;">
+        <%= ahref_feedback(
+          @conn,
+          "Report an error or suggest an improvement for this endpoint codes"
+        ) %>
+      </p>
 
       <.endpoint_explainer
         steps={@explainer_steps}
