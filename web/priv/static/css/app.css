@@ -944,6 +944,43 @@ TODO:
         }
     }
 
+    & .side-by-side {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 2em;
+        row-gap: 1em;
+        align-items: flex-start;
+    }
+
+    & .reference-range-table {
+        display: grid;
+        grid-template-columns: fit-content(30ch) repeat(2, max-content);
+
+        & [role="columnheader"] {
+            font-weight: bold;
+        }
+
+        & [role="row"] {
+            display: grid;
+            grid-template-columns: subgrid;
+            grid-column: 1 / -1;
+            gap: 0.5em;
+        }
+
+        & [role="row"]:nth-child(2n) {
+            background-color: #f6f5f0;
+        }
+
+        & [role="gridcell"],
+        [role="columnheader"] {
+            padding: 0.25em 0.5em;
+        }
+
+        & .reference-range-value {
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
     & .no-data {
         color: #757575;
         font-size: 0.75em;

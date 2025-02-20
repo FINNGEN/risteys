@@ -12,6 +12,7 @@ defmodule Risteys.LabTestStats do
   alias Risteys.LabTestStats.PeopleWithTwoPlusRecords
   alias Risteys.LabTestStats.MedianYearsFirstToLastMeasurement
   alias Risteys.LabTestStats.QCTable
+  alias Risteys.LabTestStats.ReferenceRangeTable
   alias Risteys.LabTestStats.DistributionLabValues
   alias Risteys.LabTestStats.DistributionYearOfBirth
   alias Risteys.LabTestStats.DistributionAgeFirstMeasurement
@@ -533,8 +534,10 @@ defmodule Risteys.LabTestStats do
     stats = Map.put_new(stats, :sex_female_percent, sex_female_percent)
 
     qc_table = get_qc_table(omop_id)
+    stats = Map.put_new(stats, :qc_table, qc_table)
 
-    Map.put_new(stats, :qc_table, qc_table)
+    reference_range_table = get_reference_range_table(omop_id)
+    Map.put_new(stats, :reference_range_table, reference_range_table)
   end
 
   def import_qc_tables(
@@ -760,6 +763,70 @@ defmodule Risteys.LabTestStats do
           percent_missing_measurement_value: qc_row.percent_missing_measurement_value,
           test_outcome_counts: qc_row.test_outcome_counts,
           distribution_measurement_values: qc_row.distribution_measurement_values
+        }
+    )
+  end
+
+  def import_reference_range_tables(file_path) do
+    map_omop_dbids = OMOP.get_map_omop_ids()
+
+    attrs_list =
+      file_path
+      |> File.stream!()
+      |> Stream.map(&Jason.decode!/1)
+      |> Stream.map(fn row ->
+        %{
+          "OMOP_CONCEPT_ID" => omop_id,
+          "ReferenceRange" => reference_range,
+          "NRecords" => nrecords,
+          "NPeople" => npeople
+        } = row
+
+        omop_concept_dbid = Map.get(map_omop_dbids, omop_id)
+
+        %{
+          omop_id: omop_id,
+          omop_concept_dbid: omop_concept_dbid,
+          reference_range: reference_range,
+          nrecords: nrecords,
+          npeople: npeople
+        }
+      end)
+      |> Enum.filter(fn %{omop_concept_dbid: omop_concept_dbid, omop_id: omop_id} ->
+        if is_nil(omop_concept_dbid) do
+          Logger.warning(
+            "Discarding stats for reference range table for OMOP Concept ID: #{omop_id}: OMOP concept ID not found in the database."
+          )
+
+          false
+        else
+          true
+        end
+      end)
+
+    {:ok, :ok} =
+      Repo.transaction(fn ->
+        Repo.delete_all(ReferenceRangeTable)
+
+        Enum.each(attrs_list, fn attrs ->
+          %ReferenceRangeTable{}
+          |> ReferenceRangeTable.changeset(attrs)
+          |> Repo.insert!()
+        end)
+      end)
+  end
+
+  def get_reference_range_table(omop_concept_id) do
+    Repo.all(
+      from reference_range in ReferenceRangeTable,
+        join: omop in OMOP.Concept,
+        on: reference_range.omop_concept_dbid == omop.id,
+        where: omop.concept_id == ^omop_concept_id,
+        order_by: [desc: :npeople],
+        select: %{
+          reference_range: reference_range.reference_range,
+          nrecords: reference_range.nrecords,
+          npeople: reference_range.npeople
         }
     )
   end

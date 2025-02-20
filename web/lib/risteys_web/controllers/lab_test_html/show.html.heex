@@ -231,10 +231,33 @@
       <article>
         <h3>Distribution of lab values</h3>
 
-        <figure>
-          <%= @lab_test.distribution_lab_values ||
-            "No data available for the lab value distribution." %>
-        </figure>
+        <div class="side-by-side">
+          <figure>
+            <%= @lab_test.distribution_lab_values ||
+              "No data available for the lab value distribution." %>
+          </figure>
+
+          <div class="reference-range-table" role="grid">
+            <div role="row">
+              <div role="columnheader">Reference range</div>
+              <div role="columnheader" class="header-numbers">N people</div>
+              <div role="columnheader" class="header-numbers">N records</div>
+            </div>
+            <%= for row <- @lab_test.reference_range_table do %>
+              <div role="row">
+                <div role="gridcell" class="reference-range-value">
+                  <%= if is_nil(row.reference_range) do %>
+                    <span class="no-data">&mdash;</span>
+                  <% else %>
+                    <%= row.reference_range %>
+                  <% end %>
+                </div>
+                <div role="gridcell" class="cell-numbers"><%= row.npeople %></div>
+                <div role="gridcell" class="cell-numbers"><%= row.nrecords %></div>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </article>
 
       <article>
