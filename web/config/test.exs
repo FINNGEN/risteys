@@ -6,9 +6,9 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :risteys, Risteys.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
+  username: System.get_env("TEST_DATABASE_USERNAME") || "postgres",
+  password: System.get_env("TEST_DATABASE_PASSWORD") || "postgres",
+  hostname: System.get_env("TEST_DATABASE_HOST") || "localhost",
   database: "risteys_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
