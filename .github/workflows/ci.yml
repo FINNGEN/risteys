@@ -28,6 +28,8 @@ jobs:
 
     env:
       MIX_ENV: test
+      GOOGLE_CLIENT_ID: ""
+      GOOGLE_CLIENT_SECRET: ""
 
     steps:
       - uses: actions/checkout@v2
