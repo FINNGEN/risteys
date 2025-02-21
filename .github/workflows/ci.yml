@@ -24,51 +24,51 @@ jobs:
 
     defaults:
       run:
-        working-directory: risteys_elixir
+        working-directory: web
 
     env:
       MIX_ENV: test
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Elixir
-      uses: erlef/setup-beam@v1
-      with:
-        otp-version: '26'
-        elixir-version: '1.15.4'
-    - name: Restore dependency cache
-      uses: actions/cache@v2
-      with:
-        path: deps
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
-    - name: Make dummy config secret file
-      run: touch config/config.secret.exs
-    - name: Populate minimal config file for tests
-      run: |
-        cat > config/test.secret.exs <<EOF
-        import Config
+      - uses: actions/checkout@v2
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: "26"
+          elixir-version: "1.15.4"
+      - name: Restore dependency cache
+        uses: actions/cache@v2
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      - name: Make dummy config secret file
+        run: touch config/config.secret.exs
+      - name: Populate minimal config file for tests
+        run: |
+          cat > config/test.secret.exs <<EOF
+          import Config
 
-        config :risteys, RisteysWeb.Endpoint,
-          # Generated key for GitHub actions with 'mix phx.gen.secret'
-          secret_key_base: "ksSa6eSFx74oBBZ0himTvCRucvXGUjVG1itNVWV4sp+b4d/GdaSwjtFC2PqrPsKU",
-          server: false
+          config :risteys, RisteysWeb.Endpoint,
+            # Generated key for GitHub actions with 'mix phx.gen.secret'
+            secret_key_base: "ksSa6eSFx74oBBZ0himTvCRucvXGUjVG1itNVWV4sp+b4d/GdaSwjtFC2PqrPsKU",
+            server: false
 
-        config :risteys, Risteys.Repo,
-          username: "postgres",
-          password: "postgres",
-          database: "risteys_test#{System.get_env("MIX_TEST_PARTITION")}",
-          hostname: "localhost",
-          pool: Ecto.Adapters.SQL.Sandbox,
-          pool_size: 10
+          config :risteys, Risteys.Repo,
+            username: "postgres",
+            password: "postgres",
+            database: "risteys_test#{System.get_env("MIX_TEST_PARTITION")}",
+            hostname: "localhost",
+            pool: Ecto.Adapters.SQL.Sandbox,
+            pool_size: 10
 
-        config :phoenix, :plug_init_mode, :runtime
-        EOF
-    - name: Install dependencies
-      run: mix deps.get
-    - name: Run tests
-      run: mix test
-    - name: Print test coverage
-      # Check test coverage for documentation purpose, but we don't care about
-      # the coverage value so we use '|| true' to mark this step as passing
-      run: mix test --cover || true
+          config :phoenix, :plug_init_mode, :runtime
+          EOF
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Run tests
+        run: mix test
+      - name: Print test coverage
+        # Check test coverage for documentation purpose, but we don't care about
+        # the coverage value so we use '|| true' to mark this step as passing
+        run: mix test --cover || true
