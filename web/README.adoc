@@ -124,7 +124,7 @@ Import scripts should be run in this order:
   - <<file-surv-FR, FinRegistry survival analysis results>>
 
 22. import_genetic_correlations.exs, using
-  - <<file-gen-correlations, FinnGen genetic correlations>>
+  - <<file-gen-correlations, FinnGen LDSC genetic correlations>>
 
 23. import_genes.exs, using
   - <<file-havana-genes, HAVANA gene list>>
@@ -313,7 +313,7 @@ File list
 ** name: `surv_priority_endpoints_2022-12-25__XXH64_b92220411f705ef2.csv`
 ** source: Risteys pipeline
 
-* [[file-gen-correlations]] FinnGen genetic correlations
+* [[file-gen-correlations]] FinnGen LDSC genetic correlations
 ** name: `finngen_R12_FIN.ldsc.summary__XXH64_40dc9830272f8976.tsv`
 ** source: FinnGen Green library
 
@@ -321,7 +321,7 @@ File list
 ** name: `havana__XXH64_085a38684d85191e.json`
 ** source: HAVANA through FinnGen
 
-* [[file-upset-plots]], Upset Plots
+* [[file-upset-plots]] Upset Plots
 ** name: `upset_plots_R12__censor_below_5__no_finngenids__2023-10-24__XXH64_84ac03a5853d9be4.tar.zst`
 ** source: Harri S, FinnGen Phenotype team
 
