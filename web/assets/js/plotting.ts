@@ -46,9 +46,6 @@ function plotAllObs() {
       const data = JSON.parse(ee.dataset.obsplot);
 
       switch (ee.dataset.obsplotType) {
-        case "discrete":
-          ee.append(plotDiscrete(data));
-          break;
         case "categorical":
           ee.append(plotCategorical(data));
           break;
@@ -78,38 +75,6 @@ function plotAllObs() {
       }
     }
   }
-}
-
-function plotDiscrete(data: ObsDataWithLabels) {
-  return Plot.plot({
-    marginLeft: 70,
-    style: defaultPlotStyle,
-    x: {
-      label: "Number of records",
-      tickFormat: "s",
-      nice: true,
-      zero: true,
-    },
-    y: { label: null },
-    marks: [
-      Plot.gridX({ stroke: "#888" }),
-      Plot.ruleX([0]),
-      Plot.barX(data.bins, {
-        x: "y",
-        y: "x",
-        channels: { testResult: { value: "x", label: "Test result" } },
-        tip: {
-          format: {
-            testResult: true,
-            x: (dd: number) => formatLocaleEU.format(",")(dd),
-            y: false,
-          },
-        },
-        sort: { y: "-y" },
-        fill: "var(--color-risteys-darkblue, black)",
-      }),
-    ],
-  });
 }
 
 function plotCategorical(data: ObsDataWithLabels) {

@@ -212,6 +212,9 @@ defmodule RisteysWeb.LabTestHTML do
         nil ->
           nil
 
+        %{unit: "titre"} = dist ->
+          build_obsplot_payload(:categorical, dist, "Measured value (titre)", "Number of records")
+
         dist ->
           # TODO(Vincent 2024-10-30) ::OBSPLOT_FORMATTING
           # Ideally the formatting would be already correct when it comes here.
@@ -377,6 +380,22 @@ defmodule RisteysWeb.LabTestHTML do
       distribution_n_measurements_per_person: distribution_n_measurements_per_person,
       distribution_value_range_per_person: distribution_value_range_per_person
     })
+  end
+
+  defp build_obsplot_payload(:categorical, distribution, x_label, y_label) do
+    payload = %{
+      bins: distribution.bins,
+      x_label: x_label,
+      y_label: y_label
+    }
+
+    assigns = %{
+      payload: Jason.encode!(payload)
+    }
+
+    ~H"""
+    <div class="obsplot" data-obsplot-type="categorical" data-obsplot={@payload}></div>
+    """
   end
 
   defp build_obsplot_payload(
