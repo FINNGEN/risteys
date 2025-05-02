@@ -139,10 +139,10 @@ Import scripts should be run in this order:
 26. `Risteys.LabWAS.import_stats`, using:
   - <<file-labwas, LabWAS data>>
 
-27. `Risteys.OMOP.import_lab_test_loinc_concepts`, using:
+27. `Risteys.OMOP.import_lab_test_omop_concepts`, using:
   - <<file-kanta-lab-omopid-list, Kanta lab – List of OMOP Concept IDs>>
-  - <<file-omop-loinc-concept, OMOP LOINC – Concepts>>
-  - <<file-omop-loinc-concept-relationship, OMOP LOINC – Concept relationships>>
+  - <<file-omop-concepts, OMOP (LOINC + SNOMED) – Concepts>>
+  - <<file-omop-concept-relationship, OMOP (LOINC + SNOMED) – Concept relationships>>
 
 28. `Risteys.LabTestStats.import_dataset_metadata`, using:
   - <<file-kanta-lab-metadata, Kanta lab – Metadata>>
@@ -172,7 +172,7 @@ Import scripts should be run in this order:
 
 35. `Risteys.LabTestStats.import_stats_distribution_year_of_birth`, using:
   - <<file-kanta-lab-dist-yob-stats, Kanta lab – Distribution year of birth / stats>>
-  - <<file-kanta-lab-dist-yob-binning, Kanta lab – Distribution year of brith / binning>>
+  - <<file-kanta-lab-dist-yob-binning, Kanta lab – Distribution year of birth / binning>>
 
 36. `Risteys.LabTestStats.import_stats_distribution_age_first_measurement`, using:
   - <<file-kanta-lab-dist-age-first, Kanta lab – Distribution age at first measurement>>
@@ -341,13 +341,13 @@ File list
 ** name: `all_omop_ids.XXH64_3407a565a43950ce.jsonl`
 ** source: Risteys Kanta lab pipeline
 
-* [[file-omop-loinc-concept]] OMOP LOINC – Concepts
-** name: `CONCEPT.xsv_fmt.XXH64_34860affdef58dc2.csv`
-** source: Downloaded LOINC `CONCEPT.csv` from https://athena.ohdsi.org/vocabulary/list[OHDSI Athena], CODE (CDM V5) = LOINC, Latest update = 18-Sep-2023, then applied proper CSV formatting (with `xsv fmt -d"\t"`) to fix bad escaping in original `CONCEPT.csv`.
+* [[file-omop-concepts]] OMOP (LOINC + SNOMED) – Concepts
+** name: `CONCEPT.xsv_fmt.XXH64_3db4f0c961550c25.csv`
+** source: From https://athena.ohdsi.org/vocabulary/list[OHDSI Athena], then selected CODE (CDM V5) = LOINC (Latest update: 06-Aug-2024) and CODE (CDM V5) = SNOMED (Latest update: 01-Aug-2024), then downloaded the archive (contains both `CONCEPT.csv` and `CONCEPT_RELATIONSHIP.csv`), then applied proper CSV formatting (with `xsv fmt -d"\t"`) to fix bad escaping.
 
-* [[file-omop-loinc-concept-relationship]] OMOP LOINC – Concept relationships
-** name: `CONCEPT_RELATIONSHIP.xsv_fmt.XXH64_e04d06ecdd63e0c1.csv`
-** source: Downloaded LOINC `CONCEPT.csv` from https://athena.ohdsi.org/vocabulary/list[OHDSI Athena], CODE (CDM V5) = LOINC, Latest update = 18-Sep-2023, then applied proper CSV formatting (with `xsv fmt -d"\t"`) to fix bad escaping in original `CONCEPT_RELATIONSHIP.csv`.
+* [[file-omop-concept-relationships]] OMOP (LOINC + SNOMED) – Concept relationships
+** name: `CONCEPT_RELATIONSHIP.xsv_fmt.XXH64_31f9def1c5819935.csv`
+** source: From https://athena.ohdsi.org/vocabulary/list[OHDSI Athena], then selected CODE (CDM V5) = LOINC (Latest update: 06-Aug-2024) and CODE (CDM V5) = SNOMED (Latest update: 01-Aug-2024), then downloaded the archive (contains both `CONCEPT.csv` and `CONCEPT_RELATIONSHIP.csv`), then applied proper CSV formatting (with `xsv fmt -d"\t"`) to fix bad escaping.
 
 * [[file-kanta-lab-metadata]] Kanta lab – Metadata
 ** name: `n_people_alive_in_kanta_time.XXH64_fc8010f7a8ad4a08.jsonl`

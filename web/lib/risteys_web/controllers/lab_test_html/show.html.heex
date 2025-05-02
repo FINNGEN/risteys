@@ -45,8 +45,8 @@
 
           <dt>Part of collection</dt>
           <dd>
-            <%= @parent_loinc_component.concept_name %> with <%= @n_other_in_collection %> other
-            OMOP concept<%= if @n_other_in_collection < 2, do: "", else: "s" %> &mdash; open in <%= @link_athena_loinc_component %>.
+            <%= @parent_concept.concept_name %> with <%= @n_other_in_collection %> other
+            OMOP concept<%= if @n_other_in_collection < 2, do: "", else: "s" %> &mdash; open in <%= @link_athena_parent_concept %>.
           </dd>
         </dl>
       </article>

@@ -17,9 +17,9 @@
 
       <%= for %{lab_tests: lab_tests} = rec <- @lab_tests_tree_stats do %>
         <div role="rowgroup">
-          <div role="row" class="loinc-component">
-            <div role="rowheader" title={rec.loinc_component_concept_name}>
-              <%= rec.loinc_component_concept_name %>
+          <div role="row" class="lab-test-group">
+            <div role="rowheader" title={rec.parent_concept_name}>
+              <%= rec.parent_concept_name %>
             </div>
           </div>
 
