@@ -8,7 +8,8 @@ config :risteys, Risteys.Repo,
   database: System.get_env("DATABASE_NAME") || "risteys_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 10,
+  timeout: (System.get_env("DATABASE_QUERY_TIMEOUT") || "15000") |> String.to_integer()
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
