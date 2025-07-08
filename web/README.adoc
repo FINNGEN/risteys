@@ -142,7 +142,12 @@ Import scripts should be run in this order:
 27. `Risteys.OMOP.import_lab_test_omop_concepts`, using:
   - <<file-kanta-lab-omopid-list, Kanta lab – List of OMOP Concept IDs>>
   - <<file-omop-concepts, OMOP (LOINC + SNOMED) – Concepts>>
-  - <<file-omop-concept-relationship, OMOP (LOINC + SNOMED) – Concept relationships>>
+  - <<file-omop-concept-relationships, OMOP (LOINC + SNOMED) – Concept relationships>>
+
+  Can set a longer database timeout if needed, likeso:
+  ```sh
+  DATABASE_QUERY_TIMEOUT=120000 iex -S mix
+  ```
 
 28. `Risteys.LabTestStats.import_dataset_metadata`, using:
   - <<file-kanta-lab-metadata, Kanta lab – Metadata>>
@@ -162,7 +167,7 @@ Import scripts should be run in this order:
 33. `Risteys.LabTestStats.import_qc_tables`, using:
   - <<file-kanta-lab-qc-tables-stats, Kanta lab – QC tables stats>>
   - <<file-kanta-lab-qc-tables-dist-values, Kanta lab – QC tables distribution values>>
-  - <<file-kanta-lab-qc-tables-dist-bins-definitions, Kanta lab – QC tables distributin binning>>
+  - <<file-kanta-lab-qc-tables-dist-bins-definitions, Kanta lab – QC tables distribution binning>>
   - <<file-kanta-lab-qc-tables-test-outcomes, Kanta lab – QC tables test outcomes>>
 
 34. `Risteys.LabTestStats.import_stats_distribution_lab_values`, using:
@@ -202,7 +207,7 @@ Import scripts should be run in this order:
   - <<file-kanta-lab-dist-value-range-stats, Kanta lab – Distribution value range / stats>>
   - <<file-kanta-lab-dist-value-range-binning, Kanta lab – Distribution value range / binning>>
 
-43. `Risteys.LabTestStats.import_reference_range_table`, using:
+43. `Risteys.LabTestStats.import_reference_range_tables`, using:
   - <<file-kanta-lab-reference-range-table, Kanta lab – Reference range table>>
 
 
