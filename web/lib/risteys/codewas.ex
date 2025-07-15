@@ -13,20 +13,22 @@ defmodule Risteys.CodeWAS do
 
   def get_cohort_stats(endpoint) do
     Repo.one(
-      from cc in CodeWAS.Cohort,
+      from(cc in CodeWAS.Cohort,
         join: ee in FGEndpoint.Definition,
         on: cc.fg_endpoint_id == ee.id,
         where: ee.name == ^endpoint.name
+      )
     )
   end
 
   def list_codes(endpoint) do
     Repo.all(
-      from cc in CodeWAS.Codes,
+      from(cc in CodeWAS.Codes,
         join: ee in FGEndpoint.Definition,
         on: cc.fg_endpoint_id == ee.id,
         where: ee.name == ^endpoint.name,
         order_by: [desc: cc.nlog10p]
+      )
     )
   end
 
@@ -101,7 +103,7 @@ defmodule Risteys.CodeWAS do
 
               _ ->
                 odds_ratio
-              end
+            end
 
           attrs = %{
             fg_endpoint_id: endpoint.id,
@@ -126,6 +128,18 @@ defmodule Risteys.CodeWAS do
     filepath
     |> File.stream!()
     |> CSV.decode!(headers: true)
+    # Convert empty strings to `nil` to account for missing values in CSV being decoded as empty
+    # string, whereas JSON has a proper null.
+    |> Stream.map(fn row ->
+      for {key, val} <- row do
+        if val == "" do
+          {key, nil}
+        else
+          {key, val}
+        end
+      end
+      |> Enum.into(%{})
+    end)
     |> Enum.reduce(%{}, fn row, acc ->
       %{
         "FG_CODE1" => fg_code1,
