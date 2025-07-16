@@ -8,10 +8,15 @@
           <!-- span tag is used to keep 'R-' version in same line with 'Risteys' even when page is narrow-->
           <details class="details-R-nav">
             <summary class="R-nav">
-              <span class="font-normal" style="font-size: 0.75em">FG R12 + FR</span>
+              <span class="font-normal" style="font-size: 0.75em">R13</span>
             </summary>
             <div class="subnav-content">
               <ul class="R-subnav">
+                <li>
+                  <a href={change_release_url(@conn, :fg_fr, 12)} targer="_blank">
+                    FinnGen R12 + FinRegistry
+                  </a>
+                </li>
                 <li>
                   <a href={change_release_url(@conn, :fg_fr, 11)} targer="_blank">
                     FinnGen R11 + FinRegistry
@@ -141,7 +146,7 @@
 
 <footer class="bg-grey-light text-lg border-t border-grey py-8 leading-normal">
   <div class="fluid-container">
-    <p>Risteys <%= link("v2.6.0", to: ~p"/changelog#v2.6.0") %> (2025-02-10).</p>
+    <p>Risteys <%= link("v2.7.0", to: ~p"/changelog#v2.7.0") %> (2025-07-31).</p>
     <p>
       <%= ahref_feedback(@conn, "Contact us") %> for feedback or <%= ahref_extern(
         "https://github.com/FINNGEN/risteys/issues/new",

@@ -1,11 +1,15 @@
 defmodule RisteysWeb.CustomHTMLHelpers do
   def ahref_extern(href, content) do
-    Phoenix.HTML.Link.link(content, to: href, target: "_blank", rel: "noopener noreferrer external")
+    Phoenix.HTML.Link.link(content,
+      to: href,
+      target: "_blank",
+      rel: "noopener noreferrer external"
+    )
   end
 
   def ahref_feedback(conn, content) do
     where_from = Phoenix.Controller.current_path(conn)
-		href = "https://airtable.com/shrTzTwby7JhFEqi6?prefill_Page=" <> where_from
+    href = "https://airtable.com/shrTzTwby7JhFEqi6?prefill_Page=" <> where_from
     ahref_extern(href, content)
   end
 
@@ -29,7 +33,7 @@ defmodule RisteysWeb.CustomHTMLHelpers do
         "https://r10.risteys.finngen.fi" <> path
 
       dataset == :fg_fr ->
-        "https://r#{version_number}.risteys.finregistry.fi" <> path
+        "https://r#{version_number}.risteys.finngen.fi" <> path
     end
   end
 end
