@@ -223,23 +223,23 @@ File list
 ** source: FinnGen - Library Green
 
 * [[file-endp-defs]]FinnGen endpoint definitions
-** name: `finngen_R12_endpoint_core_noncore_1.0.added_omit2__XXH64_399efaa48ca282b6.csv`
-** source: Merging of `finngen_R12_endpoint_core_noncore_1.0.xlsx` and `OMIT` column from `Endpoints_Controls_FINNGEN_ENDPOINTS_DF12_Final_2023-05-17.xlsx` - FinnGen clinical team - https://github.com/FINNGEN/Df12-endpoint-and-control-definitions/[GitHub]
+** name: `finngen_R13_endpoint_core_noncore_1.0.added_omit__XXH64_954431555ae7d93f.csv`
+** source: Merging of `finngen_R13_endpoint_core_noncore_1.0.xlsx` and `OMIT` column from `Endpoints_Controls_FINNGEN_ENDPOINTS_DF13_Final_2025-05-23.xlsx` - FinnGen clinical team - https://github.com/FINNGEN/Df12-endpoint-and-control-definitions/[GitHub]
 
 * [[file-endp-main-tag]]FinnGen endpoint main tag
-** name: `FINNGEN_ENDPOINTS_DF12_Final_2023-05-17.names_tagged_ordered__XXH64_8264f1235f3f7221.txt`
-** source: FinnGen clinical team - https://github.com/FINNGEN/Df12-endpoint-and-control-definitions/[GitHub]
+** name: `FINNGEN_ENDPOINTS_DF13_Final_2025-05-23.names_tagged_ordered__XXH64_b063d95e8d735a13.txt`
+** source: FinnGen clinical team - Sharepoint
 
 * [[file-endp-taglist]]FinnGen endpoint tag list
-** name: `TAGLIST_DF12__XXH64_2c6dae042382fea9.csv`
-** source: FinnGen clinical team - https://github.com/FINNGEN/Df12-endpoint-and-control-definitions/[GitHub]
+** name: `TAGLIST_DF13__XXH64_0bd0742528d594b8.csv`
+** source: FinnGen clinical team - https://github.com/FINNGEN/DF13-endpoint-and-control-definitions/[GitHub]
 
 * [[file-endp-selected-core]]FinnGen endpoint selected core
 ** name: `finngen_correlation_clusters_DF8__XXH64_0d9f3a10306791f5.csv`
 ** source: FinnGen clinical team
 
 * [[file-interm-counts]]FinnGen endpoint intermediate counts
-** name: `finngen_endpoints_intermediate_counts_green_export_R12_v1__XXH64_85e199bb39d62337.txt`
+** name: `finngen_endpoints_intermediate_counts_green_export_R13_v2__XXH64_5ae876890fda07ef.txt`
 ** source: FinnGen registry team
 
 * [[file-ontology]]Risteys ontology
@@ -247,11 +247,11 @@ File list
 ** source: Risteys pipeline
 
 * [[file-corrected-descriptions]]Risteys corrected endpoint description
-** name: `corrected-endpoint-descriptions.airtable-export.2023-10-10__XXH64_b0bd5eb161441ba9.csv`
+** name: `corrected-endpoint-descriptions.airtable-export.2025-07-07__XXH64_c72d06fc1ba2a08a.csv`
 ** source: Risteys Airtable
 
 * [[file-excluded_endp]]FinRegistry excluded endpoints
-** name: `excluded_endpoints_FR_Risteys_R12__XXH64_508917188be68559.csv`
+** name: `excluded_endpoints_FR_Risteys_R13__XXH64_61f31ee228e0d6f7.csv`
 ** source: Risteys script `exclude_endpoints_finregistry.py`
 
 * [[file-key-fig-FR-all]]Risteys FinRegistry key figures, all individuals
@@ -263,7 +263,7 @@ File list
 ** source: Risteys pipeline
 
 * [[file-key-fig-FG]]Risteys FinnGen key figures
-** name: `key_figures_all_2023-09-20__XXH64_93a5ba6f09958693.csv`
+** name: `key_figures_all_2025-07-04__XXH64_155c4fedea86ec6d.csv`
 ** source: Risteys pipeline
 
 * [[file-distrib-age-FR]]Risteys FinRegistry age distributions
@@ -275,11 +275,11 @@ File list
 ** source: Risteys pipeline
 
 * [[file-distrib-age-FG]]Risteys FinnGen age distributions
-** name: `distribution_age_2023-09-20__XXH64_0ab1f53d7d3013f7.csv`
+** name: `distribution_age_2025-07-04__XXH64_424632e6e4c1e528.csv`
 ** source: Risteys pipeline
 
 * [[file-distrib-year-FG]]Risteys FinnGen year distributions
-** name: `distribution_year_2023-09-20__XXH64_90ee66ed48dfb5fb.csv`
+** name: `distribution_year_2025-07-04__XXH64_ac575f4b6629f1ca.csv`
 ** source: Risteys pipeline
 
 * [[file-cumul-inc-FR]]Risteys FinRegistry cumulative incidence
@@ -287,7 +287,7 @@ File list
 ** source: Risteys pipeline
 
 * [[file-cumul-inc-FG]]Risteys FinnGen cumulative incidence
-** name: `all_cumulative_incidence__r12__2023-09-20__XXH64_f4909d1f5b2565ee.csv`
+** name: `all_cumulative_incidence__XXH64_9b53002eb15be9a1.csv`
 ** source: Risteys pipeline
 
 * [[file-mortality-baseline]]Risteys FinRegistry mortality baseline cumulative hazards
@@ -303,11 +303,11 @@ File list
 ** source: Risteys pipeline
 
 * [[file-corr-pheno-geno]]FinnGen phenotypic + genotypic correlations
-** name: `corr_pheno-fg-r12.0_geno-fg-r12.0_full-join__2023-11-15__XXH64_86c9c7a833d663e5.csv.zst`
+** name: `corr_pheno-fg-r13_geno-fg-r13_full-join__2025-07-03__XXH64_2cfec9925af5e022.csv.zst`
 ** source: https://github.com/FINNGEN/endpcorr[FinnGen correlation pipeline] for the phenotypic file, merged with genotypic correlation file from FinnGen analysis team
 
 * [[file-coloc-variants]]FinnGen coloc variants
-** name: `r12.autoreport.compare.keep_cs.r2_0.8.pval_5e_8.variants__XXH64_854d4aeb62e9664a.csv`
+** name: `r13.autoreport.compare.pval_lt_5e_08.r2_gt_0_8.variants.keep_cs__XXH64_69b4f7cdcbd6b85b.csv`
 ** source: FinnGen analysis team
 
 * [[file-case-overlaps-FR]] FinRegistry case overlaps
@@ -319,7 +319,7 @@ File list
 ** source: Risteys pipeline
 
 * [[file-gen-correlations]] FinnGen LDSC genetic correlations
-** name: `finngen_R12_FIN.ldsc.summary__XXH64_40dc9830272f8976.tsv`
+** name: `finngen_R13_FIN.ldsc.summary__XXH64_93d6bd2ed6fd4f39.tsv`
 ** source: FinnGen Green library
 
 * [[file-havana-genes]] HAVANA gene list
@@ -327,20 +327,126 @@ File list
 ** source: HAVANA through FinnGen
 
 * [[file-upset-plots]] Upset Plots
-** name: `upset_plots_R12__censor_below_5__no_finngenids__2023-10-24__XXH64_84ac03a5853d9be4.tar.zst`
+** Not available for DF13 yet.
 ** source: Harri S, FinnGen Phenotype team
 
 * [[file-codewas-endpoints]] CodeWAS Endpoints
-** name: `codewas_endpoints_r11.filtered_nlog10p.green.2023-10-31.XXH64_3099f7b7f82bd251.jsonl.zst`
-** source: Raw CodeWAS data from Javier G-T, FinnGen Phenotype Team; then applied link:../pipeline/risteys_pipeline/finngen/filter_codewas_greendata.py[`filter_codewas_greendata.py`]
+** name: `codewas-from-xwas__XXH64_ea4f0a73fc852fdc.jsonl.zst`
+** source: Red CodeWAS data from Javier G-T as a DuckDB file, FinnGen Phenotype Team; then applied SQL query with DuckDB:
++
+[source,sql]
+----
+copy (
+    with source as (
+        select * from code_endpoint_counts_DF13_v1 as counts
+        left join fg_codes_info_v9 as codes
+        on (
+            -- Using `is not distinct from` to join on NULL also
+            counts.FG_CODE1 is not distinct from codes.FG_CODE1
+            and counts.FG_CODE2 is not distinct from codes.FG_CODE2
+            and counts.FG_CODE3 is not distinct from codes.FG_CODE3
+            and counts.vocabulary_id is not distinct from codes.vocabulary_id
+        )
+    ),
+    source_subset as (
+        select *
+        from source
+        where
+            -- Keep only cohort with >=50 cases and controls
+            (n_cases_total >= 50)
+            and (n_controls_total >= 50)
+            -- Keep only records with nlog10p >= MIN_NLOG10P
+            and (counts_mlogp > 6.0)
+    )
+
+    select
+        ENDPOINT as endpoint_name,
+        n_cases_total::UINT64 as n_matched_cases,
+        n_controls_total::UINT64 as n_matched_controls,
+        array_agg(
+            struct_pack(
+                code1 := FG_CODE1,
+                code2 := FG_CODE2,
+                code3 := FG_CODE3,
+                description := name_en,
+                vocabulary := vocabulary_id,
+                -- Replace Infinity with max double, because Infinity as a double/float
+                -- is not JSON compliant and will fail to parse downstream.
+                odds_ratio := if(
+                    isinf(counts_odds_ratio),
+                    1.7976931348623157e+308,
+                    counts_odds_ratio
+                ),
+                nlog10p := counts_mlogp,
+                -- Greenize the Ns
+                n_matched_cases := if(n_cases_with_code < 5, NULL, n_cases_with_code::UINT64),
+                n_matched_controls := if(n_controls_with_code < 5, NULL, n_controls_with_code::UINT64)
+            )
+        ) as codes
+    from source_subset
+    group by endpoint_name, n_matched_cases, n_matched_controls
+)
+to 'codewas-from-xwas.jsonl.zst';
+----
 
 * [[file-codewas-codelist]] CodeWAS code list
-** name: `medical_codes_fg_code_info_v3_fg_codes_info_v3.csv`
-** source: Javier G-T, FinnGen Phenotype Team
+** name: `fg_codes_info_v9.codewas__XXH64_f9a33b16990a8d57.csv`
+** source: Red CodeWAS data from Javier G-T as a DuckDB file, FinnGen Phenotype Team; then applied SQL query with DuckDB:
++
+[source,sql]
+----
+copy (select FG_CODE1, FG_CODE2, FG_CODE3, code, vocabulary_id from fg_codes_info_v9) to 'fg_codes_info_v9.codewas.csv';
+----
 
 * [[file-labwas]] LabWAS data
 ** name: `labwas.XXH64_45ee892713aa9568.jsonl`
-** source: Javier G-T, FinnGen Phenotype team; then keeping only green data.
+** source: Red CodeWAS data from Javier G-T as a DuckDB file, FinnGen Phenotype Team; then applied SQL query with DuckDB:
++
+[source,sql]
+----
+copy (
+    WITH omop AS
+        (
+            SELECT
+                concept_id,
+                concept_name
+            FROM concept
+        )
+    SELECT
+        ENDPOINT AS FG_Endpoint,
+        CAST(labwas_endpoints_df13_v2.CONCEPT_ID as VARCHAR) AS OMOP_Concept_ID,
+        omop.concept_name AS OMOP_Concept_Name,
+        CAST(n_cases_total as UINT64) AS FG_Endpoint_N_Cases,
+        CAST(n_controls_total as UINT64) AS FG_Endpoint_N_Controls,
+        CAST(n_cases_with_test as UINT64) AS With_Measurement_N_Cases,
+        CAST(n_controls_with_test as UINT64) AS With_Measurement_N_Controls,
+        if(isinf(counts_odds_ratio), 1.7976931348623157e+308, counts_odds_ratio) AS With_Measurement_Odds_Ratio,
+        if(isinf(counts_mlogp), 1.7976931348623157e+308, counts_mlogp) AS With_Measurement_mlogp,
+        mean_n_measurements_cases AS Mean_N_Measurements_Cases,
+        mean_n_measurements_controls AS Mean_N_Measurements_Controls,
+        CAST(n_cases_with_test_and_value as UINT64) AS Mean_Value_N_Cases,
+        CAST(n_controls_with_test_and_value as UINT64) AS Mean_Value_N_Controls,
+        unit_value_cases As Mean_Value_Unit,
+        mean_value_cases AS Mean_Value_Cases,
+        mean_value_controls AS Mean_Value_Controls,
+        if(isinf(values_mlogp), 1.7976931348623157e+308, values_mlogp) AS Mean_Value_mlogp
+    FROM labwas_endpoints_df13_v2
+    LEFT JOIN omop ON labwas_endpoints_df13_v2.CONCEPT_ID = omop.concept_id
+    WHERE (
+        ((FG_Endpoint_N_Cases = 0) OR (FG_Endpoint_N_Cases >= 5))
+        AND ((FG_Endpoint_N_Controls = 0) OR (FG_Endpoint_N_Controls >= 5))
+        AND ((With_Measurement_N_Cases = 0) OR (With_Measurement_N_Cases >= 5))
+        AND ((With_Measurement_N_Controls = 0) OR (With_Measurement_N_Controls >= 5))
+        AND ((Mean_Value_N_Cases = 0) OR (Mean_Value_N_Cases >= 5))
+        AND ((Mean_Value_N_Controls = 0) OR (Mean_Value_N_Controls >= 5))
+        AND (((FG_Endpoint_N_Cases - With_Measurement_N_Cases) = 0) OR ((FG_Endpoint_N_Cases - With_Measurement_N_Cases) >= 5))
+        AND (((FG_Endpoint_N_Controls - With_Measurement_N_Controls) = 0) OR ((FG_Endpoint_N_Controls - With_Measurement_N_Controls) >= 5))
+        AND (((With_Measurement_N_Cases - Mean_Value_N_Cases) = 0) OR ((With_Measurement_N_Cases - Mean_Value_N_Cases) >= 5))
+        AND (((With_Measurement_N_Controls - Mean_Value_N_Controls) = 0) OR ((With_Measurement_N_Controls - Mean_Value_N_Controls) >= 5))
+    )
+)
+to 'labwas-from-xwas.jsonl.zst' (format JSON, array FALSE, compression 'zstd')
+----
 
 * [[file-kanta-lab-omopid-list]] Kanta lab – List of OMOP Concept IDs
 ** name: `all_omop_ids.XXH64_3407a565a43950ce.jsonl`
