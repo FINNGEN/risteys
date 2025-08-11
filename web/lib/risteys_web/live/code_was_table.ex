@@ -74,10 +74,14 @@ defmodule RisteysWeb.Live.CodeWASTable do
             )
 
         description_filter =
-          String.contains?(
-            String.downcase(row.description),
-            String.downcase(socket.assigns.description_filter)
-          )
+          if is_nil(row.description) do
+            false
+          else
+            String.contains?(
+              String.downcase(row.description),
+              String.downcase(socket.assigns.description_filter)
+            )
+          end
 
         code_filter and vocabulary_filter and description_filter
       end)
