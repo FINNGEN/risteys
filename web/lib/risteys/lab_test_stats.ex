@@ -1903,8 +1903,10 @@ defmodule Risteys.LabTestStats do
     ]
 
     init_query =
-      from omop_concept in OMOP.Concept,
+      from omop_concept_relationship in OMOP.ConceptRelationship,
+        left_join: omop_concept in OMOP.Concept,
         as: :omop,
+        on: omop_concept_relationship.child_dbid == omop_concept.id,
         left_join: qc_table in QCTable,
         as: :qc_table,
         on: omop_concept.id == qc_table.omop_concept_dbid,
