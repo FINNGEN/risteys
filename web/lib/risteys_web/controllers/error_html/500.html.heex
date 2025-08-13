@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error 500 – Internal Server Error</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: hsl(50, 40%, 97%);
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      article {
+        max-width: 80ch;
+        margin: 20vh auto 0;
+        font-size: 1.25em;
+      }
+    </style>
+  </head>
+  <body>
+    <article>
+      <h1>500 – Internal Server Error</h1>
+      <p>
+        We failed to serve the URL <code><%= @conn.request_path %></code>, please retry in a moment.
+      </p>
+      <p>
+        If the problem persists, we would appreciate that you <a
+          href={"https://airtable.com/shrTzTwby7JhFEqi6?prefill_Page=" <> @conn.request_path}
+          target="_blank"
+          rel="noopener noreferrer external"
+        >
+        contact us
+        </a>.
+      </p>
+      <p style="margin-top: min(15vh, 4em)">Go to <a href="/">Risteys home page</a>.</p>
+    </article>
+  </body>
+</html>

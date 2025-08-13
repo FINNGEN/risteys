@@ -9,7 +9,8 @@ defmodule RisteysWeb.ErrorHTMLTest do
     assert html_response(conn, 404) =~ "Page Not Found"
   end
 
-  test "renders 500.html" do
-    assert render_to_string(RisteysWeb.ErrorHTML, "500", "html", []) == "Internal Server Error"
+  test "renders 500.html", %{conn: conn} do
+    assert render_to_string(RisteysWeb.ErrorHTML, "500", "html", conn: conn) =~
+             "Internal Server Error"
   end
 end
