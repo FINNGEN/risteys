@@ -4,8 +4,9 @@ defmodule RisteysWeb.ErrorHTMLTest do
   # Bring render_to_string/4 for testing custom views
   import Phoenix.Template
 
-  test "renders 404.html" do
-    assert render_to_string(RisteysWeb.ErrorHTML, "404", "html", []) == "Not Found"
+  test "renders 404.html", %{conn: conn} do
+    conn = get(conn, "/missing/page")
+    assert html_response(conn, 404) =~ "Page Not Found"
   end
 
   test "renders 500.html" do

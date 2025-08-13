@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error 404 – Page Not Found</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: hsl(50, 40%, 97%);
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      article {
+        max-width: 80ch;
+        margin: 20vh auto 0;
+        font-size: 1.25em;
+      }
+    </style>
+  </head>
+  <body>
+    <article>
+      <h1>404 – Page Not Found</h1>
+      <p>The requested URL <code><%= @conn.request_path %></code> was not found.</p>
+      <p>Go to <a href="/">Risteys home page</a>.</p>
+    </article>
+  </body>
+</html>

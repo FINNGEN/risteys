@@ -18,18 +18,10 @@ defmodule RisteysWeb.FGEndpointController do
   end
 
   def show(conn, %{"name" => name}) do
-    case Repo.get_by(FGEndpoint.Definition, name: name) do
-      nil ->
-        conn
-        |> assign(:page_title, "404 Not Found: #{name}")
-        |> assign(:name, name)
-        |> put_status(:not_found)
-        |> put_view(RisteysWeb.ErrorView)
-        |> render("404.html")
+    # Directly returns a 404 when the given OMOP Concept ID is not in the database
+    endpoint = Repo.get_by!(FGEndpoint.Definition, name: name)
 
-      endpoint ->
-        show_endpoint(conn, endpoint)
-    end
+    show_endpoint(conn, endpoint)
   end
 
   def redir_random(conn, _params) do
