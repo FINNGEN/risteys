@@ -14,6 +14,9 @@ defmodule RisteysWeb.LabTestController do
   end
 
   def show(conn, %{"omop_id" => omop_id} = _params) do
+    # Directly returns a 404 when the given OMOP Concept ID is not in the database
+    _ = Risteys.Repo.get_by!(Risteys.OMOP.Concept, concept_id: omop_id)
+
     url_athena_base = "https://athena.ohdsi.org/search-terms/terms/"
 
     link_athena_lab_test =
