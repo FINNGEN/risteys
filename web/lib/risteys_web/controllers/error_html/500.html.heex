@@ -11,16 +11,27 @@
       h1 {
         font-size: 1.5em;
       }
+      q {
+        font-style: italic
+      }
       article {
-        max-width: 80ch;
+        max-width: 60ch;
         margin: 20vh auto 0;
         font-size: 1.25em;
+      }
+      .subtitle {
+        color: #646464;
+        margin-bottom: 3em;
+      }
+      .backlink {
+        margin-top: min(15vh, 3em)
       }
     </style>
   </head>
   <body>
     <article>
-      <h1>500 – Internal Server Error</h1>
+      <h1>Internal Server Error</h1>
+      <p class="subtitle">Error 500</p>
       <p>
         We failed to serve the URL <code><%= @conn.request_path %></code>, please retry in a moment.
       </p>
@@ -33,7 +44,7 @@
         contact us
         </a>.
       </p>
-      <p style="margin-top: min(15vh, 4em)">Go to <a href="/">Risteys home page</a>.</p>
+      <p class="backlink">Go to <a href="/">Risteys home page</a>.</p>
     </article>
   </body>
 </html>

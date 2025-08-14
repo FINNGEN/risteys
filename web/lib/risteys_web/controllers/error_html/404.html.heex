@@ -11,18 +11,68 @@
       h1 {
         font-size: 1.5em;
       }
+      q {
+        font-style: italic
+      }
       article {
-        max-width: 80ch;
+        max-width: 60ch;
         margin: 20vh auto 0;
         font-size: 1.25em;
+      }
+      .subtitle {
+        color: #646464;
+        margin-bottom: 3em;
+      }
+      .backlink {
+        margin-top: min(15vh, 3em)
       }
     </style>
   </head>
   <body>
     <article>
-      <h1>404 – Page Not Found</h1>
+      <h1>Page Not Found</h1>
+      <p class="subtitle">Error 404</p>
       <p>The requested URL <code><%= @conn.request_path %></code> was not found.</p>
-      <p>Go to <a href="/">Risteys home page</a>.</p>
+
+      <% #
+      query_last_segment = @conn.request_path |> String.split("/") |> Enum.at(-1)
+
+      missing_phenos = %{
+        "BMI_IRN" => "Body mass index, inverse-rank normalized",
+        "HEIGHT_IRN" => "Height, inverse-rank normalized",
+        "WEIGHT_IRN" => "Weight, inverse-rank normalized"
+      }
+
+      missing_lab_tests = %{
+        "egfr_ckdepi2009" =>
+          "eGFR values estimated from harmonized creatinine [3020564] values using 2009 formula [ml/min/173m2], sample-wise median, quantitative, derived",
+        "egfr_ckdepi2021" =>
+          "eGFR values estimated from harmonized creatinine [3020564] values using 2021 formula [ml/min/173m2], sample-wise median, quantitative, derived",
+        "nonHDL" =>
+          "Non HDL cholesterol (TC [3019900]-HDL[3019900]) in Serum or Plasma [mmol/l], sampe-wise median, quantitative, derived",
+        "CAionComb" =>
+          "Calcium.ionized [Moles/volume] adjusted to pH 7.4 and not-adjusted in Blood [mmol/l], sample-wise median, quantitative, derived",
+        "T4_T3_ratio" =>
+          "Ratio of T4 (3008486) and T3 (3026989) on Serum or Plasma [pmol/l], sample-wise median, quantitative, derived"
+      }
+
+      # %>
+      <%= cond do %>
+        <% Map.has_key?(missing_phenos, query_last_segment) -> %>
+          <p>
+            I am not able to show a page for <q><%= Map.fetch!(missing_phenos, query_last_segment) %></q>,
+            since it is a phenotype made for GWAS only and not a FinnGen endpoint.
+          </p>
+        <% Map.has_key?(missing_lab_tests, query_last_segment) -> %>
+          <p>
+            I am not able to show a page for
+            <q><%= Map.fetch!(missing_lab_tests, query_last_segment) %></q>
+            since it is a derived lab test and is made for GWAS only.
+          </p>
+        <% true -> %>
+          <%!-- Don't display anything for unknown values --%>
+      <% end %>
+      <p class="backlink">Go to <a href="/">Risteys home page</a>.</p>
     </article>
   </body>
 </html>
