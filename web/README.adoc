@@ -327,7 +327,7 @@ File list
 ** source: HAVANA through FinnGen
 
 * [[file-upset-plots]] Upset Plots
-** Not available for DF13 yet.
+** name: `upset_plots_R13v3__XXH64_62f88fccce6f002b.tar.zstd`
 ** source: Harri S, FinnGen Phenotype team
 
 * [[file-codewas-endpoints]] CodeWAS Endpoints
