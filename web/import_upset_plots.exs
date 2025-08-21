@@ -47,20 +47,31 @@ existing_endpoints_db =
 # --- Gather input data
 Logger.info("Gathering input data")
 
-runlogs =
+runlog_path =
   in_dir
   |> Path.expand()
   |> Path.join(runlog_file)
-  |> File.stream!()
-  |> CSV.decode!(headers: true)
-  |> Enum.reduce(%{}, fn row, acc ->
-    %{
-      "Endpoint" => endpoint,
-      "Result" => result
-    } = row
 
-    Map.put_new(acc, endpoint, result)
-  end)
+runlogs =
+  if File.exists?(runlog_path) do
+    runlog_path
+    |> File.stream!()
+    |> CSV.decode!(headers: true)
+    |> Enum.reduce(%{}, fn row, acc ->
+      %{
+        "Endpoint" => endpoint,
+        "Result" => result
+      } = row
+
+      Map.put_new(acc, endpoint, result)
+    end)
+  else
+    Logger.warning(
+      "The runlog file `#{runlog_file}` is missing. No failure reasons will be shown to the users."
+    )
+
+    :missing_file
+  end
 
 upset_plots_path =
   in_dir
@@ -215,26 +226,29 @@ key_status_upset_table = String.to_atom("status_upset_table_" <> dataset_atom)
 
 # Go through every endpoint and filter by plot or table status not to be "ok" to set correct status for those cases
 for endpoint <- all_db_endpoints,
-  Map.get(endpoint, key_status_upset_plot) != "ok" or Map.get(endpoint, key_status_upset_table) != "ok" do
-
+    Map.get(endpoint, key_status_upset_plot) != "ok" or
+      Map.get(endpoint, key_status_upset_table) != "ok" do
   failure =
-    case Map.fetch(runlogs, endpoint.name) do
-      :error ->
-        Logger.warning("#{endpoint.name} not found in run log file")
-        "not run"
+    if runlogs == :missing_file do
+      "unknown reason"
+    else
+      case Map.fetch(runlogs, endpoint.name) do
+        {:error, _} ->
+          Logger.warning("#{endpoint.name} not found in run log file")
+          "not run"
 
-      {:ok, status} ->
-        cond do
-          status == "Endpoint set to omit" -> "omit"
-          status =~ "Not enough data" or status =~ "sizes too small" -> "not enough data"
-          status =~ "No data found" -> "no data"
-          status =~ "pending unroll" -> "pending unroll"
-          true -> "unknown"
-        end
+        {:ok, status} ->
+          cond do
+            status == "Endpoint set to omit" -> "omit"
+            status =~ "Not enough data" or status =~ "sizes too small" -> "not enough data"
+            status =~ "No data found" -> "no data"
+            status =~ "pending unroll" -> "pending unroll"
+            true -> "unknown reason"
+          end
+      end
     end
 
   if Map.get(endpoint, key_status_upset_plot) != "ok" do
-
     FGEndpoint.set_status!(endpoint, key_upset_plot, failure)
   end
 
