@@ -109,7 +109,7 @@ defmodule Risteys.FGEndpoint.Definition do
       "not enough data",
       "no data",
       "pending unroll",
-      "unknown"
+      "unknown reason"
     ]
 
     endpoint
@@ -177,9 +177,15 @@ defmodule Risteys.FGEndpoint.Definition do
     ])
     |> validate_required([:name])
     |> validate_inclusion(:reason_non_core, [nil, "exallc_priority", "correlated", "other"])
-    |> validate_exclusion(:control_exclude, [""], message: "must be 'nil' instead of an empty string")
-    |> validate_exclusion(:control_preconditions, [""], message: "must be 'nil' instead of an empty string")
-    |> validate_exclusion(:control_conditions, [""], message: "must be 'nil' instead of an empty string")
+    |> validate_exclusion(:control_exclude, [""],
+      message: "must be 'nil' instead of an empty string"
+    )
+    |> validate_exclusion(:control_preconditions, [""],
+      message: "must be 'nil' instead of an empty string"
+    )
+    |> validate_exclusion(:control_conditions, [""],
+      message: "must be 'nil' instead of an empty string"
+    )
     |> validate_change(:ontology, fn :ontology, ontology ->
       allowed = allowed_ontology_types()
 
