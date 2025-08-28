@@ -78,7 +78,7 @@ def compute_distribution(first_events, column):
         min_year = 1970
         max_year = round(first_events["year"].max())
         by_year = 5
-        brackets = [np.NINF] + list(range(min_year, max_year, by_year)) + [max_year]
+        brackets = [-np.inf] + list(range(min_year, max_year, by_year)) + [max_year]
 
     # Compute distribution
     dist = (

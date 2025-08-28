@@ -59,7 +59,7 @@ def distribution_to_dict(dist):
     """
 
     res = defaultdict(dict)
-    dist = dist.replace({np.nan: None, np.NINF: None, np.PINF: None})
+    dist = dist.replace({np.nan: None, -np.inf: None, np.inf: None})
 
     for (endpoint, df) in dist.groupby("endpoint"):
         endpoint_dist = {"all": [], "female": [], "male": []}

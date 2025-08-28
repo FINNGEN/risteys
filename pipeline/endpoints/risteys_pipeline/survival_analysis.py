@@ -51,7 +51,7 @@ def get_cohort(minimal_phenotype):
 
     cohort["outcome"] = 0
     cohort["start"] = np.maximum(cohort["birth_year"], FOLLOWUP_START)
-    cohort["stop"] = np.minimum(cohort["death_year"].fillna(np.Inf), FOLLOWUP_END)
+    cohort["stop"] = np.minimum(cohort["death_year"].fillna(np.inf), FOLLOWUP_END)
 
     cohort = cohort.set_index("personid")
 
@@ -118,7 +118,7 @@ def get_exposed(exposure, first_events, cohort, cases, buffer=30):
     exposed = get_cases(exposure, first_events, cohort)
     exposed = exposed.rename(columns={"outcome": "exposure", "stop": "exposure_year"})
     exposed = exposed[["exposure_year", "exposure"]]
-    exposed = exposed.join(cases, how="left").fillna({"stop": np.Inf})
+    exposed = exposed.join(cases, how="left").fillna({"stop": np.inf})
     exposed = exposed.loc[
         (exposed["stop"] - exposed["exposure_year"]) > (buffer / DAYS_IN_YEAR)
     ]
