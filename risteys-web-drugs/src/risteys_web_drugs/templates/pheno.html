@@ -1,0 +1,254 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <title>Risteys Drugs prototype</title>
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='main.css') }}"
+    />
+</head>
+<body>
+    <p class="topbanner">
+        This is a
+        <b>prototype</b>
+        of the Risteys drugs page. Expect changes at any time. Feedback welcome:
+        <a
+            href="https://airtable.com/shrTzTwby7JhFEqi6?prefill_Page=/"
+            rel="noopener noreferrer external"
+            target="_blank"
+        >
+            click to open feedback form
+        </a>
+        .
+    </p>
+    <nav><a href="/">&larr;&nbsp;Back to index</a></nav>
+    <main>
+        <h1>{{ gg.phenotype }}</h1>
+        <p>
+            <a
+                href="https://drugs.finngen.fi/pheno/{{ phenoid }}"
+                rel="noopener noreferrer external"
+                target="_blank"
+            >
+                &rarr;&nbsp;PheWeb GWAS
+            </a>
+        </p>
+        <article>
+            <h2>Definition</h2>
+            <dl>
+                <dt>Data Source</dt>
+                <dd>Kela purchase registry</dd>
+                <dt>ATC codes (prefixes)</dt>
+                <dd>{{ gg.ATCPrefixes }}</dd>
+            </dl>
+        </article>
+        <article>
+            <h2>Cohort</h2>
+            <div class="flex-plots">
+                <div id="plot-cohort-years"></div>
+                <div id="plot-cohort-ages"></div>
+            </div>
+        </article>
+        <article>
+            <h2>Drug statistics</h2>
+            <div class="flex-plots">
+                <div id="plot-drugs-duration-vs-cntrows"></div>
+                <div id="plot-drugs-duration-vs-gaptime"></div>
+            </div>
+            <div id="plot-drugs-over-years"></div>
+        </article>
+    </main>
+    <script src="{{ url_for('static', filename='d3.js') }}"></script>
+    <script src="{{ url_for('static', filename='plot.js') }}"></script>
+    <script type="module">
+        const binned_ages = JSON.parse(`{{ data.by_ages|safe }}`);
+        const binned_years = JSON.parse(`{{ data.by_years|safe }}`);
+        const drugs_duration_vs_gaptime = JSON.parse(
+            `{{ data.drugs_duration_vs_gaptime|safe }}`,
+        );
+        const drugs_duration_vs_cntrows = JSON.parse(
+            `{{ data.drugs_duration_vs_cntrows|safe }}`,
+        );
+        const drugs_over_years = JSON.parse(`{{ data.drugs_over_years|safe }}`);
+
+        function plotBars(dataset, yLabel) {
+            return Plot.plot({
+                color: {
+                    range: ["#6798db", "#2a466c"],
+                },
+                x: {
+                    tickFormat: "d",
+                    label: yLabel,
+                },
+                y: {
+                    tickFormat: "s",
+                    label: "Number of peopple",
+                },
+                fx: {
+                    label: null,
+                },
+                style: { background: "#eee" },
+                marks: [
+                    Plot.ruleY([0]),
+                    Plot.rectY(dataset, {
+                        x1: "x1",
+                        x2: "x2",
+                        y: "CntPeople",
+                        fx: "Kind",
+                        fill: "Kind",
+                        ry2: 3,
+                        insetLeft: 2,
+                    }),
+                    Plot.tip(
+                        dataset,
+                        Plot.pointerX({
+                            x1: "x1",
+                            x2: "x2",
+                            fx: "Kind",
+                            y: "CntPeople",
+                            channels: {
+                                xFmt: {
+                                    value: (dd) => `${dd.x1}–${dd.x2}`,
+                                    label: "Years",
+                                },
+                                yFmt: {
+                                    value: (dd) => dd.CntPeople,
+                                    label: "Number of people",
+                                },
+                                fxFmt: {
+                                    value: "Kind",
+                                    label: "",
+                                },
+                            },
+                            format: {
+                                x: false,
+                                y: false,
+                                fx: false,
+                                xFmt: true,
+                                yFmt: true,
+                                fxFmt: true,
+                            },
+                        }),
+                    ),
+                ],
+            });
+        }
+
+        function plotHeatmapMedianGapTime(dataset) {
+            return Plot.plot({
+                caption: "* Not showing data for people with only 1 record.",
+                x: {
+                    label: "Duration 1st–last record (days)",
+                },
+                y: {
+                    label: "Median gap time (days)",
+                },
+                color: {
+                    legend: true,
+                    scheme: "gnbu",
+                },
+                style: { background: "#f6f6f6" },
+                marks: [
+                    Plot.frame(),
+                    Plot.rect(
+                        dataset.filter((dd) => dd.MedianGapTime_bin !== null),
+                        {
+                            x1: "DurationFirstToLastRecord_bin_extent1",
+                            x2: "DurationFirstToLastRecord_bin_extent2",
+                            y1: "MedianGapTime_bin_extent1",
+                            y2: "MedianGapTime_bin_extent2",
+                            fill: "CntPeople",
+                            tip: true,
+                        },
+                    ),
+                ],
+            });
+        }
+
+        function getCntPeopleN1(dataset_mediangaptime) {
+            return dataset_mediangaptime.filter(
+                (rr) => rr.MedianGapTime_bin === null,
+            )[0].CntPeople;
+        }
+
+        function plotHeatmapNEvents(dataset) {
+            return Plot.plot({
+                caption: "* Not showing data for people with only 1 record.",
+                x: {
+                    label: "Duration 1st–last record (days)",
+                },
+                y: {
+                    label: "Number of events",
+                },
+                color: {
+                    legend: true,
+                    scheme: "gnbu",
+                },
+                style: { background: "#f6f6f6" },
+                marks: [
+                    Plot.frame(),
+                    Plot.rect(dataset, {
+                        x1: "DurationFirstToLastRecord_bin_extent1",
+                        x2: "DurationFirstToLastRecord_bin_extent2",
+                        y1: "CntRows_bin_extent1",
+                        y2: "CntRows_bin_extent2",
+                        fill: "CntPeople",
+                        tip: true,
+                    }),
+                ],
+            });
+        }
+
+        function plotOverYears(dataset) {
+            return Plot.plot({
+                x: {
+                    interval: 1,
+                    tickFormat: "d",
+                },
+                y: {
+                    tickFormat: "s",
+                },
+                color: {
+                    legend: true,
+                    scheme: "Observable10",
+                },
+                style: {
+                    background: "#eee",
+                },
+                marks: [
+                    Plot.ruleY([0]),
+                    Plot.areaY(dataset, {
+                        x: "Year",
+                        y: "CntRows",
+                        fill: "CODE1",
+                        tip: true,
+                    }),
+                ],
+            });
+        }
+
+        document
+            .getElementById("plot-cohort-years")
+            .append(plotBars(binned_years, "Years"));
+
+        document
+            .getElementById("plot-cohort-ages")
+            .append(plotBars(binned_ages, "Age group"));
+
+        document
+            .getElementById("plot-drugs-duration-vs-cntrows")
+            .append(plotHeatmapNEvents(drugs_duration_vs_cntrows));
+
+        document
+            .getElementById("plot-drugs-duration-vs-gaptime")
+            .append(plotHeatmapMedianGapTime(drugs_duration_vs_gaptime));
+
+        document
+            .getElementById("plot-drugs-over-years")
+            .append(plotOverYears(drugs_over_years));
+
+        document.getElementById("gaptime-nmissing").textContent =
+            getCntPeopleN1(drugs_duration_vs_gaptime);
+    </script>
+</body>

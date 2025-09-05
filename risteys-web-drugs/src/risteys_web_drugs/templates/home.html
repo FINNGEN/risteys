@@ -1,0 +1,30 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <title>Risteys Drugs prototype</title>
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='main.css') }}"
+    />
+</head>
+<body>
+    <p class="topbanner">
+        This is a
+        <b>prototype</b>
+        of the Risteys drugs page. Expect changes at any time. Feedback welcome:
+        <a
+            href="https://airtable.com/shrTzTwby7JhFEqi6?prefill_Page=/"
+            rel="noopener noreferrer external"
+            target="_blank"
+            >click to open feedback form</a
+        >.
+    </p>
+    <main>
+        <ul>
+            {% for phenocode, gg in groupings|items %}
+            <li><a href="/pheno/{{ phenocode }}">{{ gg.phenotype }}</a></li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>

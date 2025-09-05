@@ -1,0 +1,30 @@
+body {
+  margin: 0
+}
+
+main, nav {
+  margin: 0 4em;
+}
+
+article {
+  margin-top: 6em;
+}
+
+
+p.topbanner {
+  margin-top: 0;
+}
+
+.topbanner {
+  border: 2px dashed black;
+  padding: 1em 0.5em;
+  background-color: #eee;
+
+}
+
+.flex-plots {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 4em;
+  row-gap: 1.5em;
+}
