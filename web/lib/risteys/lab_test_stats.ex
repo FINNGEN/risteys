@@ -561,7 +561,7 @@ defmodule Risteys.LabTestStats do
 
     attrs_list =
       for {key, stats} <- map_stats do
-        {omop_id, test_name, measurement_unit} = key
+        {omop_id, test_name, measurement_unit_source} = key
 
         omop_concept_dbid = Map.get(map_omop_dbids, omop_id)
 
@@ -572,7 +572,7 @@ defmodule Risteys.LabTestStats do
           omop_concept_dbid: omop_concept_dbid,
           omop_id: omop_id,
           test_name: test_name,
-          measurement_unit: measurement_unit,
+          measurement_unit_source: measurement_unit_source,
           test_outcome_counts: test_outcome_counts,
           distribution_measurement_values: distribution
         })
@@ -609,14 +609,14 @@ defmodule Risteys.LabTestStats do
       %{
         "OMOP_CONCEPT_ID" => omop_id,
         "TEST_NAME" => test_name,
-        "MEASUREMENT_UNIT" => measurement_unit,
+        "MEASUREMENT_UNIT_SOURCE" => measurement_unit_source,
         "MEASUREMENT_UNIT_HARMONIZED" => measurement_unit_harmonized,
         "NRecords" => nrecords,
         "NPeople" => npeople,
         "PercentMissingMeasurementValue" => percent_missing_measurement_value
       } = row
 
-      key = {omop_id, test_name, measurement_unit}
+      key = {omop_id, test_name, measurement_unit_source}
 
       value = %{
         measurement_unit_harmonized: measurement_unit_harmonized,
@@ -637,13 +637,13 @@ defmodule Risteys.LabTestStats do
       %{
         "OMOP_CONCEPT_ID" => omop_id,
         "TEST_NAME" => test_name,
-        "MEASUREMENT_UNIT" => measurement_unit,
+        "MEASUREMENT_UNIT_SOURCE" => measurement_unit_source,
         "TEST_OUTCOME" => test_outcome,
         "TestOutcomeCount" => count,
         "NPeople" => npeople
       } = row
 
-      key = {omop_id, test_name, measurement_unit}
+      key = {omop_id, test_name, measurement_unit_source}
       new_count = %{test_outcome: test_outcome, count: count, npeople: npeople}
       list_counts = [new_count | Map.get(acc, key, [])]
 
@@ -660,7 +660,7 @@ defmodule Risteys.LabTestStats do
         %{
           "OMOP_CONCEPT_ID" => omop_id,
           "TEST_NAME" => test_name,
-          "MEASUREMENT_UNIT" => measurement_unit,
+          "MEASUREMENT_UNIT_SOURCE" => measurement_unit_source,
           "BinIndex" => bin_index,
           "NPeople" => npeople,
           "BinCount" => yy
@@ -668,7 +668,7 @@ defmodule Risteys.LabTestStats do
 
         # We use bin_index in the key to merge it with the bins definitions.
         # It will be dropped from the key after this merge.
-        key = {omop_id, test_name, measurement_unit, bin_index}
+        key = {omop_id, test_name, measurement_unit_source, bin_index}
         value = %{npeople: npeople, yy: yy}
 
         Map.put_new(acc, key, value)
@@ -718,7 +718,7 @@ defmodule Risteys.LabTestStats do
 
     map_bins =
       for {stats_key, stats_value} <- map_stats, into: %{} do
-        {omop_id, _test_name, _measurement_unit, bin_index} = stats_key
+        {omop_id, _test_name, _measurement_unit_source, bin_index} = stats_key
 
         value =
           map_bins_definitions
@@ -730,16 +730,16 @@ defmodule Risteys.LabTestStats do
 
     bins =
       Enum.reduce(map_bins, %{}, fn {key, value}, acc ->
-        {omop_id, test_name, measurement_unit, _bin_index} = key
+        {omop_id, test_name, measurement_unit_source, _bin_index} = key
 
-        dist_key = {omop_id, test_name, measurement_unit}
+        dist_key = {omop_id, test_name, measurement_unit_source}
         list_bins = [value | Map.get(acc, dist_key, [])]
 
         Map.put(acc, dist_key, list_bins)
       end)
 
     for {dist_key, list_bins} <- bins, into: %{} do
-      {omop_id, _test_name, _measurement_unit} = dist_key
+      {omop_id, _test_name, _measurement_unit_source} = dist_key
       distribution_metadata = Map.fetch!(map_distribution_metadata, omop_id)
 
       {dist_key, Map.put_new(distribution_metadata, :bins, list_bins)}
@@ -756,7 +756,7 @@ defmodule Risteys.LabTestStats do
         select: %{
           omop_id: omop.concept_id,
           test_name: qc_row.test_name,
-          measurement_unit: qc_row.measurement_unit,
+          measurement_unit_source: qc_row.measurement_unit_source,
           measurement_unit_harmonized: qc_row.measurement_unit_harmonized,
           nrecords: qc_row.nrecords,
           npeople: qc_row.npeople,

@@ -4,7 +4,7 @@ defmodule Risteys.LabTestStats.QCTable do
 
   schema "lab_test_stats_qc_table" do
     field :test_name, :string
-    field :measurement_unit, :string
+    field :measurement_unit_source, :string
     field :measurement_unit_harmonized, :string
     field :nrecords, :integer
     field :npeople, :integer
@@ -22,7 +22,7 @@ defmodule Risteys.LabTestStats.QCTable do
     |> cast(attrs, [
       :omop_concept_dbid,
       :test_name,
-      :measurement_unit,
+      :measurement_unit_source,
       :measurement_unit_harmonized,
       :nrecords,
       :npeople,
@@ -37,6 +37,6 @@ defmodule Risteys.LabTestStats.QCTable do
       :npeople,
       :percent_missing_measurement_value
     ])
-    |> unique_constraint([:omop_concept_dbid, :test_name, :measurement_unit])
+    |> unique_constraint([:omop_concept_dbid, :test_name, :measurement_unit_source])
   end
 end

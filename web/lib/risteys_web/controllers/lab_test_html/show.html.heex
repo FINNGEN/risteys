@@ -109,7 +109,7 @@
                 <td><%= qc_row.omop_id %></td>
                 <td><%= qc_row.test_name %></td>
                 <td>
-                  <%= qc_row.measurement_unit || ~H"&mdash;" %> (<%= qc_row.measurement_unit_harmonized ||
+                  <%= qc_row.measurement_unit_source || ~H"&mdash;" %> (<%= qc_row.measurement_unit_harmonized ||
                     ~H"&mdash;" %>)
                 </td>
                 <td><%= qc_row.npeople %></td>
