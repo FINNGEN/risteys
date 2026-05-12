@@ -36,6 +36,7 @@ corrections =
   corrections_filepath
   |> File.stream!()
   |> CSV.decode!(headers: true)
+  |> Stream.filter(fn %{"Approved for release?" => checked?} -> checked? == "checked" end)
   |> Enum.into(%{}, fn %{"Endpoint" => endpoint, "Corrected description" => description} ->
     {endpoint, description}
   end)
@@ -87,5 +88,3 @@ with_data =
 
 total = length(ontologies)
 Logger.info("There are #{with_data} / #{total} endpoints with ontology data.")
-
-
