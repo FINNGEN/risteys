@@ -1592,11 +1592,6 @@ defmodule Risteys.LabTestStats do
         end
       end)
       |> (fn %{without_errors: rows} -> rows end).()
-      # TODO(Vincent 2024-10-31) Fix pipeline output to either have bins 2013-12
-      # and 2024-01, or remove the stats for this bins in the output.
-      |> Enum.reject(fn %{"BinLabel" => bin_label} ->
-        bin_label == "2013-12" or bin_label == "2024-01"
-      end)
       |> Enum.reduce(%{}, fn row, acc ->
         %{
           "OMOP_CONCEPT_ID" => omop_id,

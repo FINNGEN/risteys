@@ -216,12 +216,12 @@ def apply(parsed_config: dict, config_file: Path) -> RuntimeConfig:
         kanta_preprocessed_columns=kanta_preprocessed_columns,
         run_dir=run_dir,
         stats_dir=stats_dir,
-        kanta_start_date=parsed_config["pipeline"]["stats"][
-            "kanta_registry_span_dates"
-        ][0],
-        kanta_end_date=parsed_config["pipeline"]["stats"]["kanta_registry_span_dates"][
-            1
-        ],
+        kanta_start_date=(
+            parsed_config["pipeline"]["stats"]["kanta_registry_span_dates"][0]
+        ),
+        kanta_end_date=(
+            parsed_config["pipeline"]["stats"]["kanta_registry_span_dates"][1]
+        ),
         age_dist_start=parsed_config["pipeline"]["stats"]["age_dist_x_axis"][0],
         age_dist_end=parsed_config["pipeline"]["stats"]["age_dist_x_axis"][1],
         age_dist_bin_width=parsed_config["pipeline"]["stats"]["age_dist_bin_width"],

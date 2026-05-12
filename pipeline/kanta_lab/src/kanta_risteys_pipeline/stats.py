@@ -960,7 +960,10 @@ def compute_dist_n_measurements_over_years(
             {
                 "BinX1": pl.date_range(
                     kanta_start_date,
-                    kanta_end_date,
+                    # We +1 the end month here since the last line of the
+                    # dataframe will be removed later by a combination of BinX2
+                    # `shift` and BinX2 `~ .is_null()`
+                    pl.lit(kanta_end_date).dt.offset_by(interval),
                     interval=interval,
                     eager=True,
                 )
