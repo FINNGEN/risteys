@@ -241,7 +241,7 @@ File list
 ** source: FinnGen clinical team
 
 * [[file-interm-counts]]FinnGen endpoint intermediate counts
-** name: `finngen_endpoints_intermediate_counts_green_export_R14_v1__XXH64_52d8a7980c855e39.txt`
+** name: `finngen_endpoints_intermediate_counts_green_export_R14_v2__XXH64_60671058c52f96fb.txt`
 ** source: FinnGen registry team
 
 * [[file-ontology]]Risteys ontology
