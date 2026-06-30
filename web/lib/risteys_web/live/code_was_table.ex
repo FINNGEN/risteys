@@ -1,136 +1,185 @@
 defmodule RisteysWeb.Live.CodeWASTable do
   use RisteysWeb, :live_view
 
+  alias RisteysWeb.LiveTable
+  alias RisteysWeb.LiveTable.Column
+
+  @default_sorter "nlog10p_desc"
+
   def mount(_params, %{"endpoint" => endpoint}, socket) do
-    default_sorter = "nlog10p_desc"
-
-    init_form = to_form(%{"sorter" => default_sorter})
-
-    all_codes = Risteys.CodeWAS.list_codes(endpoint)
+    columns = columns()
+    init_form = to_form(%{"sorter" => @default_sorter})
+    all_rows = Risteys.CodeWAS.list_codes(endpoint)
 
     socket =
       socket
       |> assign(:form, init_form)
-      |> assign(:all_codes, all_codes)
-      |> assign(:active_sorter, default_sorter)
-      |> assign(:code_filter, "")
-      |> assign(:vocabulary_filter, "")
-      |> assign(:description_filter, "")
-      |> assign(:display_codes, all_codes)
+      |> assign(:endpoint, endpoint)
+      |> assign(:columns, columns)
+      |> assign(:active_sorter, @default_sorter)
+      |> assign(:filters, %{})
+      |> assign(:all_rows, all_rows)
+      # Initial load is sorted but unfiltered. Filtering starts on the first update_table event.
+      |> assign(:display_rows, LiveTable.sort(all_rows, @default_sorter, columns))
 
     {:ok, socket, layout: false}
   end
 
   def handle_event("sort_table", %{"sorter" => sorter}, socket) do
-    socket =
-      socket
-      |> assign(:active_sorter, sorter)
-      |> update_table()
-
-    {:noreply, socket}
+    {:noreply, socket |> assign(:active_sorter, sorter) |> recompute()}
   end
 
-  def handle_event("update_table", filters, socket) do
-    %{
-      "code-filter" => code_filter,
-      "vocabulary-filter" => vocabulary_filter,
-      "description-filter" => description_filter
-    } = filters
-
-    socket =
-      socket
-      |> assign(:code_filter, code_filter)
-      |> assign(:vocabulary_filter, vocabulary_filter)
-      |> assign(:description_filter, description_filter)
-      |> update_table()
-
-    {:noreply, socket}
+  def handle_event("update_table", params, socket) do
+    filters = Map.take(params, LiveTable.filter_params(socket.assigns.columns))
+    {:noreply, socket |> assign(:filters, filters) |> recompute()}
   end
 
-  defp update_table(socket) do
-    display_codes =
-      socket.assigns.all_codes
-      |> Enum.filter(fn row ->
-        code_filter =
-          String.contains?(
-            String.downcase(row.code),
-            String.downcase(socket.assigns.code_filter)
-          )
+  def handle_event("download_csv", _params, socket) do
+    content = LiveTable.to_csv(socket.assigns.display_rows, socket.assigns.columns)
+    filename = "risteys_codewas_#{socket.assigns.endpoint.name}.csv"
+    {:noreply, push_event(socket, "download-csv", %{filename: filename, content: content})}
+  end
 
-        vocabulary_namings = Risteys.CodeWAS.Codes.vocabulary_namings(row.vocabulary)
+  defp recompute(socket) do
+    display_rows =
+      LiveTable.view(
+        socket.assigns.all_rows,
+        socket.assigns.filters,
+        socket.assigns.active_sorter,
+        socket.assigns.columns
+      )
 
-        vocabulary_filter =
-          String.contains?(
-            String.downcase(row.vocabulary),
-            String.downcase(socket.assigns.vocabulary_filter)
-          ) or
-            String.contains?(
-              String.downcase(vocabulary_namings.short),
-              String.downcase(socket.assigns.vocabulary_filter)
-            ) or
-            String.contains?(
-              String.downcase(vocabulary_namings.full),
-              String.downcase(socket.assigns.vocabulary_filter)
-            )
+    assign(socket, :display_rows, display_rows)
+  end
 
-        description_filter =
-          if is_nil(row.description) do
-            false
-          else
-            String.contains?(
-              String.downcase(row.description),
-              String.downcase(socket.assigns.description_filter)
-            )
+  @doc """
+  The CodeWAS table columns, in display order. Public so it can be exercised in tests.
+  """
+  def columns do
+    [
+      %Column{
+        id: "code",
+        label: "Code",
+        csv_label: "Code",
+        widget_class: "header-numbers codewas--data-grid-table--widget--code",
+        filter: %{
+          param: "code-filter",
+          match: fn row, query -> substring?(row.code, query) end
+        },
+        cell: fn assigns ->
+          ~H"""
+          <div role="rowheader" class="font-mono" title={@row.code}><%= @row.code %></div>
+          """
+        end,
+        csv_value: fn row -> row.code end
+      },
+      %Column{
+        id: "vocabulary",
+        label: "Vocabulary",
+        csv_label: "Vocabulary",
+        widget_class: "header-numbers codewas--data-grid-table--widget--vocabulary",
+        filter: %{
+          param: "vocabulary-filter",
+          match: fn row, query ->
+            namings = Risteys.CodeWAS.Codes.vocabulary_namings(row.vocabulary)
+
+            substring?(row.vocabulary, query) or
+              substring?(namings.short, query) or
+              substring?(namings.full, query)
           end
-
-        code_filter and vocabulary_filter and description_filter
-      end)
-      |> sort_with_nil(socket.assigns.active_sorter)
-
-    assign(socket, :display_codes, display_codes)
+        },
+        cell: fn assigns ->
+          ~H"""
+          <div role="rowheader"><%= to_descriptive_vocabulary(@row.vocabulary) %></div>
+          """
+        end,
+        csv_value: fn row -> Risteys.CodeWAS.Codes.vocabulary_namings(row.vocabulary).short end
+      },
+      %Column{
+        id: "description",
+        label: "Description",
+        csv_label: "Description",
+        widget_class: "codewas--data-grid-table--widget--description",
+        filter: %{
+          param: "description-filter",
+          match: fn row, query ->
+            not is_nil(row.description) and substring?(row.description, query)
+          end
+        },
+        cell: fn assigns ->
+          ~H"""
+          <div role="gridcell" title={@row.description}><%= @row.description %></div>
+          """
+        end,
+        csv_value: fn row -> row.description || "" end
+      },
+      %Column{
+        id: "odds_ratio",
+        label: "Odds Ratio",
+        label_class: "header-numbers",
+        csv_label: "Odds Ratio",
+        widget_class: "header-numbers codewas--data-grid-table--widget--odds-ratio",
+        sortable: true,
+        sort_value: fn row -> row.odds_ratio end,
+        cell: fn assigns ->
+          ~H"""
+          <div class="cell-numbers" role="gridcell"><%= display_odds_ratio(@row.odds_ratio) %></div>
+          """
+        end,
+        csv_value: fn row -> display_odds_ratio(row.odds_ratio) end
+      },
+      %Column{
+        id: "nlog10p",
+        label: Phoenix.HTML.raw("-log<sub>10</sub>(p)"),
+        label_class: "header-numbers",
+        csv_label: "-log10(p)",
+        widget_class: "header-numbers codewas--data-grid-table--widget--nlog10p",
+        sortable: true,
+        sort_value: fn row -> row.nlog10p end,
+        cell: fn assigns ->
+          ~H"""
+          <div class="cell-numbers" role="gridcell">
+            <%= :erlang.float_to_binary(@row.nlog10p, decimals: 1) %>
+          </div>
+          """
+        end,
+        csv_value: fn row -> :erlang.float_to_binary(row.nlog10p, decimals: 1) end
+      },
+      %Column{
+        id: "n_matched_cases",
+        label: "N matched cases",
+        label_class: "header-numbers",
+        csv_label: "N matched cases",
+        widget_class: "header-numbers codewas--data-grid-table--widget--n-matched-cases",
+        sortable: true,
+        sort_value: fn row -> row.n_matched_cases end,
+        cell: fn assigns ->
+          ~H"""
+          <div class="cell-numbers" role="gridcell"><%= mask_low_n(@row.n_matched_cases) %></div>
+          """
+        end,
+        csv_value: fn row -> mask_low_n_csv(row.n_matched_cases) end
+      },
+      %Column{
+        id: "n_matched_controls",
+        label: "N matched controls",
+        label_class: "header-numbers",
+        csv_label: "N matched controls",
+        widget_class: "header-numbers codewas--data-grid-table--widget--n-matched-controls",
+        sortable: true,
+        sort_value: fn row -> row.n_matched_controls end,
+        cell: fn assigns ->
+          ~H"""
+          <div class="cell-numbers" role="gridcell"><%= mask_low_n(@row.n_matched_controls) %></div>
+          """
+        end,
+        csv_value: fn row -> mask_low_n_csv(row.n_matched_controls) end
+      }
+    ]
   end
 
-  defp sort_with_nil(elements, sorter) do
-    {mapper, direction} =
-      case sorter do
-        "code_asc" ->
-          {fn row -> String.downcase(row.code) end, :asc}
-
-        "code_desc" ->
-          {fn row -> String.downcase(row.code) end, :desc}
-
-        "vocabulary_asc" ->
-          {fn row -> String.downcase(row.vocabulary) end, :asc}
-
-        "vocabulary_desc" ->
-          {fn row -> String.downcase(row.vocabulary) end, :desc}
-
-        "nlog10p_asc" ->
-          {fn row -> row.nlog10p end, :asc}
-
-        "nlog10p_desc" ->
-          {fn row -> row.nlog10p end, :desc}
-
-        "odds_ratio_asc" ->
-          {fn row -> row.odds_ratio end, :asc}
-
-        "odds_ratio_desc" ->
-          {fn row -> row.odds_ratio end, :desc}
-
-        "n_matched_cases_asc" ->
-          {fn row -> row.n_matched_cases end, :asc}
-
-        "n_matched_cases_desc" ->
-          {fn row -> row.n_matched_cases end, :desc}
-
-        "n_matched_controls_asc" ->
-          {fn row -> row.n_matched_controls end, :asc}
-
-        "n_matched_controls_desc" ->
-          {fn row -> row.n_matched_controls end, :desc}
-      end
-
-    Enum.sort_by(elements, mapper, RisteysWeb.Utils.sorter_nil_is_0(direction))
+  defp substring?(value, query) do
+    String.contains?(String.downcase(value), String.downcase(query))
   end
 
   defp display_odds_ratio(odds_ratio) do
@@ -149,6 +198,11 @@ defmodule RisteysWeb.Live.CodeWASTable do
     else
       value
     end
+  end
+
+  # Plain-text counterpart of mask_low_n/1 for CSV export: keep the privacy mask.
+  defp mask_low_n_csv(value) do
+    if is_nil(value), do: "*", else: to_string(value)
   end
 
   defp to_descriptive_vocabulary(value) do

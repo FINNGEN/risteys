@@ -38,6 +38,27 @@ window.openDialog = openDialog;
 window.closeDialog = closeDialog;
 setupDialogComponent();
 
+/* CSV download
+ *
+ * Triggered by a LiveView `push_event(socket, "download-csv", %{filename, content})`,
+ * which LiveView dispatches as a `phx:download-csv` window event. We build a Blob from
+ * the server-generated CSV and trigger a download client-side.
+ */
+window.addEventListener("phx:download-csv", (event) => {
+  const { filename, content } = event.detail;
+  const blob = new Blob([content], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+});
+
 /* Draw histograms */
 const histograms = document.querySelectorAll("[data-histogram-values");
 for (const ee of histograms) {

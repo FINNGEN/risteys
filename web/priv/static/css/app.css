@@ -180,6 +180,25 @@ TODO:
 }
 
 /*
+ * MODULE: LiveTable
+ */
+.live-table {
+    .live-table--download-button {
+            border: 1px solid #888;
+            border-radius: 7px;
+            background-color: white;
+            color: black;
+            padding: .25em .5em;
+    }
+    .live-table--download-button:hover {
+            background-color: #eee;
+    }
+    .live-table--download-button:active {
+            background-color: #cacaca;
+    }
+}
+
+/*
  * COMPONENT: Search box
  */
 

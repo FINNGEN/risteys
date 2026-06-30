@@ -1,90 +1,9 @@
-<div class="data-grid-table codewas--data-grid-table codewas--data-grid-table-conf" role="grid">
-  <div role="rowgroup">
-    <div role="row">
-      <div role="columnheader">Code</div>
-      <div role="columnheader">Vocabulary</div>
-      <div role="columnheader">Description</div>
-      <div class="header-numbers" role="columnheader">Odds Ratio</div>
-      <div class="header-numbers" role="columnheader">-log<sub>10</sub>(p)</div>
-      <div class="header-numbers" role="columnheader">N matched cases</div>
-      <div class="header-numbers" role="columnheader">N matched controls</div>
-    </div>
-    <div role="row">
-      <.form
-        for={@form}
-        id="form-codewas-table"
-        phx-submit="sort_table"
-        phx-change="update_table"
-        style="display: none;"
-      >
-      </.form>
-      <div class="header-numbers codewas--data-grid-table--widget--code" role="columnheader">
-        <%= RisteysWeb.Utils.text_input_field(
-          "code-filter",
-          "form-codewas-table",
-          @code_filter,
-          "type to filter"
-        ) %>
-      </div>
-      <div class="header-numbers codewas--data-grid-table--widget--vocabulary" role="columnheader">
-        <%= RisteysWeb.Utils.text_input_field(
-          "vocabulary-filter",
-          "form-codewas-table",
-          @vocabulary_filter,
-          "type to filter"
-        ) %>
-      </div>
-      <div class="codewas--data-grid-table--widget--description" role="columnheader">
-        <%= RisteysWeb.Utils.text_input_field(
-          "description-filter",
-          "form-codewas-table",
-          @description_filter,
-          "type to filter"
-        ) %>
-      </div>
-      <div class="header-numbers codewas--data-grid-table--widget--odds-ratio" role="columnheader">
-        <%= RisteysWeb.Utils.sorter_buttons("odds_ratio", "form-codewas-table", @active_sorter) %>
-      </div>
-      <div class="header-numbers codewas--data-grid-table--widget--nlog10p" role="columnheader">
-        <%= RisteysWeb.Utils.sorter_buttons("nlog10p", "form-codewas-table", @active_sorter) %>
-      </div>
-      <div
-        class="header-numbers codewas--data-grid-table--widget--n-matched-cases"
-        role="columnheader"
-      >
-        <%= RisteysWeb.Utils.sorter_buttons(
-          "n_matched_cases",
-          "form-codewas-table",
-          @active_sorter
-        ) %>
-      </div>
-      <div
-        class="header-numbers codewas--data-grid-table--widget--n-matched-controls"
-        role="columnheader"
-      >
-        <%= RisteysWeb.Utils.sorter_buttons(
-          "n_matched_controls",
-          "form-codewas-table",
-          @active_sorter
-        ) %>
-      </div>
-    </div>
-  </div>
-  <div role="rowgroup">
-    <%= for cc <- @display_codes do %>
-      <div role="row">
-        <div role="rowheader" class="font-mono" title={cc.code}><%= cc.code %></div>
-        <div role="rowheader"><%= cc.vocabulary |> to_descriptive_vocabulary() %></div>
-        <div role="gridcell" title={cc.description}><%= cc.description %></div>
-        <div class="cell-numbers" role="gridcell"><%= display_odds_ratio(cc.odds_ratio) %></div>
-        <div class="cell-numbers" role="gridcell">
-          <%= cc.nlog10p |> :erlang.float_to_binary(decimals: 1) %>
-        </div>
-        <div class="cell-numbers" role="gridcell"><%= cc.n_matched_cases |> mask_low_n() %></div>
-        <div class="cell-numbers" role="gridcell">
-          <%= cc.n_matched_controls |> mask_low_n() %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
+<RisteysWeb.LiveTable.table
+  id="codewas-table"
+  grid_class="data-grid-table codewas--data-grid-table codewas--data-grid-table-conf"
+  columns={@columns}
+  rows={@display_rows}
+  form={@form}
+  active_sorter={@active_sorter}
+  filters={@filters}
+/>
